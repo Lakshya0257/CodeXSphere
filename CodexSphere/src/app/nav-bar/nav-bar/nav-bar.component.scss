@@ -1,0 +1,28 @@
+@import '../../../styles.scss';
+
+.nav-bar{
+    width: $nav-bar-width;
+    // border-right: 1px solid $lightgrey;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    padding: 1% 0;
+    background-color: black;
+
+    @include vertical-flex-sb;
+
+    .upper-half{
+        img{
+            margin-left: 5%;
+            margin-bottom: 50px;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+    }
+
+    img{
+        width: $nav-bar-width;
+        object-fit: cover;
+    }
+}

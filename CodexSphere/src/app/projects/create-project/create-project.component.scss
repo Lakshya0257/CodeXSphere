@@ -1,0 +1,79 @@
+.contentss{
+    color: grey;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        right: 50px;
+        bottom: 50px;
+        // background: rgb(197,0,218);
+        background: linear-gradient(270deg,#ff00ea,#5100ff);
+        width: 150px;
+        height: 50px;
+        border-radius: 50px;
+        transition: width 250ms ease-in-out, height 250ms ease-in-out;
+        p{
+            color: white;
+        }
+        
+    }
+
+    .container:hover{
+        width: 155px;
+        height: 55px;
+    }
+      
+      .title-area{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .textarea {
+            margin: 20px 0;
+            display: block;
+            max-width: 50%;
+            overflow: hidden;
+            resize: both;
+            min-height: 40px;
+            font-size: 2em;
+            font-weight: bold;
+            outline: none;
+            border: none;
+            background-color: transparent;
+            color: white;
+          }
+          
+          .textarea[contenteditable]:empty::before {
+            content: "Title goes here...";
+            color: gray;
+          }
+      }
+
+    .cover{
+        width: 100%;
+        height: 400px;
+        object-fit: cover ;
+        .cover-image{
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+    }
+
+    .input{
+        min-height: fit-content;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    
+}

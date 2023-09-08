@@ -1,0 +1,62 @@
+/* You can add global styles to this file, and also import other style files */
+$lightgrey : rgba(202, 202, 202, 0.767);
+$grey-text:grey;
+$nav-bar-width:15vw;
+$heading: 1.5rem;
+$subheading: .9rem;
+$paragraph: .9rem;
+$iconsize: 1rem;
+
+
+
+@mixin flex-display{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+@mixin hori-flex-sb{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin vertical-flex-se{
+    @include flex-display;
+    flex-direction: column;
+}
+@mixin vertical-flex-sb{
+    @include flex-display;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+button, i , fa-icon , a{
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+h1 , p , h2, h3, h4, h5, h6 , i{
+    color: $lightgrey;
+}
+
+i{
+    font-size: 1.2rem;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+body{
+    background-color: black
+}
