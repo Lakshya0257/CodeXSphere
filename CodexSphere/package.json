@@ -27,6 +27,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-regular-svg-icons": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "axios": "^1.5.0",
     "codex-notifier": "^1.1.2",
     "codex-tooltip": "^1.0.5",
     "rxjs": "~7.8.0",

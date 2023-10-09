@@ -1,11 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseConnectionModule } from './database-connection/database-connection.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BlogsModule } from './blogs/blogs.module';
 import { UserModule } from './user/user.module';
+import * as cors from 'cors';
 
 @Module({
   imports: [
@@ -44,4 +43,15 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // Enable CORS with custom options
+    const corsOptions = {
+      origin: 'http://localhost:4200', // Replace with your frontend app's URL
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true, // Enable passing cookies, if needed
+    };
+    
+    consumer.apply(cors(corsOptions)).forRoutes('*');
+  }
+}

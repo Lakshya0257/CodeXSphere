@@ -1,0 +1,12 @@
+<div ngClass="content">
+    <div class="inner-content">
+        <h1>Create new account</h1>
+        <p ngClass="keyline"> "New beginnings start here. Welcome to our community!"</p>
+        <input ngClass="email" type="email" placeholder="Email" #email>
+        <input ngClass="pass" type="password" placeholder="Password">
+        <input ngClass="pass" type="password" placeholder="Confirm Password">
+        <button ngClass="login" (click)="signup()"><p>SignUp</p></button>
+        <p ngClass="signup">Already have an account? <span (click)="login()">Login</span></p>
+    </div>
+
+</div>

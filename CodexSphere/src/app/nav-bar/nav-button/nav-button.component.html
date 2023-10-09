@@ -14,7 +14,7 @@
     <i class="fa-solid fa-bell"></i>
     <p>Notifications</p>
 </a>
-<a href="projects/new" [ngClass]="{'active': isRouteActive('/projects/new')}">
+<a (click)="isLogin()" [ngClass]="{'active': isRouteActive('/projects/new')}">
     <i class="fa-solid fa-plus"></i>
     <p>New Post</p>
 </a>

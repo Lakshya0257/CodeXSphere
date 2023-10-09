@@ -3,5 +3,5 @@
     <div ngClass="input"><input  type="file" accept="image/*" (change)="onImageInputChange($event)" class="pickImage"></div>
     <div class="title-area"><span #textareaElement ngClass="textarea" role="textbox" contenteditable (input)="handleTitle($event)" [spellcheck]="false"></span></div>
 <div #editor style="color: rgb(204, 204, 204); width: 100%" [spellcheck]="false"></div>
-<button type="button" (click)="showEditorData()" class="container"><p>Upload</p></button>
+<button type="button" (click)="saveData()" class="container"><p>Upload</p></button>
 </div>

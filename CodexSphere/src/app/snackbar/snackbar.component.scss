@@ -1,0 +1,17 @@
+.snackbar{
+    position: fixed;
+    left: 2vw;
+    bottom: 2vh;
+    width: fit-content;
+    max-width: 20vw;
+    height: fit-content;
+    z-index: 999999;
+    background: linear-gradient(270deg,#ff00ea,#5100ff);
+    padding: 20px;
+    border-radius: 20px;
+
+    p{
+        color: white;
+        font-size: .9em;
+    }
+}

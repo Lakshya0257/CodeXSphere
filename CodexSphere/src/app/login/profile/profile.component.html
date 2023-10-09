@@ -1,0 +1,11 @@
+<div ngClass="content">
+    <div class="inner-content">
+        <h1>Create new profile</h1>
+        <div ngClass="cover"><img class="cover-image" [src]=imagePreview></div>
+        <div ngClass="input"><input  type="file" accept="image/*" (change)="onImageInputChange($event)" class="pickImage"></div>
+        <input ngClass="username" type="text" placeholder="Create new Username">
+        <textarea placeholder="About"></textarea>
+        <button ngClass="create"><p>Create Profile</p></button>
+    </div>
+
+</div>

@@ -1,5 +1,5 @@
 // @ts-ignore
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import EditorJS, { ToolConstructable, BlockToolConstructable, InlineToolConstructable } from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 // @ts-ignore
@@ -10,6 +10,7 @@ import CodeTool from '@editorjs/code';
 import InlineCode from '@editorjs/inline-code';
 // @ts-ignore
 import Embed from '@editorjs/embed';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'app-create-project',
@@ -26,9 +27,11 @@ export class CreateProjectComponent implements AfterViewInit {
   @ViewChild('textareaElement') textareaElement: ElementRef | undefined;
 
   private editor: EditorJS | undefined;
+
+  title : String = "";
   imagePreview: String | ArrayBuffer ="https://penji.co/wp-content/uploads/2021/07/What-is-an-Illustration-Project-and-How-Do-I-Order-One.jpg";
 
-  constructor() { }
+  constructor(private v : ProjectService = inject(ProjectService)) { }
 
   ngAfterViewInit(): void {
     this.initializeEditor();
@@ -36,10 +39,10 @@ export class CreateProjectComponent implements AfterViewInit {
 
   handleTitle(event:any):void{
     const maxCharacters = 100; // Define your maximum character limit
-    const text = event.target.textContent;
+    this.title = event.target.textContent;
 
-    if (text.length > maxCharacters) {
-      event.target.textContent = text.slice(0, 100);
+    if (this.title.length > maxCharacters) {
+      event.target.textContent = this.title.slice(0, 100);
       this.setCursorToEnd();
       // Optionally, you could show a message to the user indicating the limit has been reached
     }
@@ -96,10 +99,26 @@ export class CreateProjectComponent implements AfterViewInit {
       }
     });
   }
-
-  showEditorData() {
-    this.editor?.save().then(data => {
-      console.dir(data);
-    })
+ 
+  saveData() {
+    if(this.imagePreview==="https://penji.co/wp-content/uploads/2021/07/What-is-an-Illustration-Project-and-How-Do-I-Order-One.jpg"){
+      console.warn('Please select a project thumbnail');
+    }else if(this.title===""){
+      console.warn('Please enter a valid title');
+    }else{
+      this.editor?.save().then(data => {
+        console.dir(data);
+        const value = JSON.stringify(data);
+        const output = JSON.stringify({
+          heading : this.title,
+          thumbnail_url : "testing",
+          body : JSON.stringify(data),
+          userId : '44545',
+          key : "4554484"
+        });
+        this.v.postBlog(output);
+      })
+    }
+    
   }
 }
