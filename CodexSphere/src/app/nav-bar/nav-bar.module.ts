@@ -19,4 +19,8 @@ import { UserModule } from '../user/user.module';
     NavBarComponent
   ]
 })
-export class NavBarModule { }
+export class NavBarModule {
+  constructor(){
+    console.log("Navbar intialization");
+  }
+ }

@@ -1,4 +1,4 @@
-<a href="home" [ngClass]="{'active': isRouteActive('/home')}">
+<a (click)="navigate('home')" [ngClass]="{'active': isRouteActive('/home')}">
     <i class="fa-solid fa-house"></i>
     <p>Home</p>
 </a>

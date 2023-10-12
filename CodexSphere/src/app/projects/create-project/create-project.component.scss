@@ -74,6 +74,19 @@
         width: 100%;
         margin-top: 10px;
         margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .thumbButtn{
+            width: fit-content;
+            padding: 15px;
+            background: linear-gradient(270deg,#ff00ea,#5100ff);
+            cursor: pointer;
+            color: white;
+            border-radius: 10px;
+
+        }
     }
     
     

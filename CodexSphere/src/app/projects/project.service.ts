@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ApiHelperService } from "../api/global_api_ref.service";
+import { ApiHelperService } from "../global-services/api/global_api_ref.service";
 import axios from "axios";
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { ErrorService } from 'src/app/error/error.service';
-import { SnackbarComponent } from 'src/app/snackbar/snackbar.component';
+import { LoginService } from '../login.service';
+import { ErrorService } from 'src/app/global-services/error/error.service';
 
 @Component({
   selector: 'app-signup',
@@ -10,7 +10,7 @@ import { SnackbarComponent } from 'src/app/snackbar/snackbar.component';
   encapsulation:ViewEncapsulation.Emulated
 })
 export class SignupComponent {
-  constructor(private router : Router , private errorService : ErrorService){
+  constructor(private router : Router , private errorService : ErrorService, private loginService : LoginService){
   }
 
   @ViewChild('email') email : ElementRef | undefined ;
@@ -19,10 +19,11 @@ export class SignupComponent {
   
 
   signup(){
-    // this.container.createComponsent(SnackbarComponent);
-    this.errorService.checkPassword('acac','acac');
-    document.cookie=`email : ${this.email?.nativeElement.value}`;
-    this.router.navigate(["login/profile"]);
+    const result=this.errorService.checkPassword(this.password?.nativeElement.value,this.confirmPass?.nativeElement.value);
+    if(result!=="Error"){
+      this.loginService.setLoginDetails(this.email?.nativeElement.value,this.password?.nativeElement.value);
+      this.router.navigate(["login/profile"]);
+    }
   }
   
   login(){

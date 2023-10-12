@@ -32,4 +32,7 @@ export class User {
   
   @Column()
   likes: number;
+
+  @Column()
+  about: string;
 }

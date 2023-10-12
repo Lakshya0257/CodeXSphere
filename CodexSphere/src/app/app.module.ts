@@ -5,9 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarModule } from './nav-bar/nav-bar.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ApiHelperService } from './api/global_api_ref.service';
-import { ErrorService } from './error/error.service';
+import { ApiHelperService } from './global-services/api/global_api_ref.service';
+import { ErrorService } from './global-services/error/error.service';
 import { SnackbarComponent } from './snackbar/snackbar.component';
+import { UserStoreService } from './global-services/store-service/user-service.service';
+import { HelperService } from './global-services/helper/helper.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +21,6 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
     FontAwesomeModule,
     SnackbarComponent
   ],
-  providers:[ApiHelperService, ErrorService]
+  providers:[ApiHelperService, ErrorService, UserStoreService, HelperService]
 })
 export class AppModule {}

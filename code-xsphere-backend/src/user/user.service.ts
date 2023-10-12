@@ -1,5 +1,4 @@
 import {
-  HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -8,10 +7,9 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
-import { And, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { LoginDto } from "./dto/login-user.dto";
-import { json } from "stream/consumers";
-import { errors } from "pg-promise";
+import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 
 @Injectable()
 export class UserService {
@@ -20,6 +18,17 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    const check= await this.userRepository.findOne({where: {
+      email: createUserDto.email
+    }});
+    if(check!==null){
+      throw new UnauthorizedException({
+        
+          status: "error",
+          message : "Email already exists."
+        
+      })
+    }
     let newUser: User = new User();
     newUser.avatar = createUserDto.avatarUrl;
     newUser.name = createUserDto.name;
@@ -29,6 +38,7 @@ export class UserService {
     newUser.following_ids = [];
     newUser.requests = [];
     newUser.likes = 0;
+    newUser.about= createUserDto.about;
 
     const user = await this.userRepository.save(newUser);
 
@@ -44,11 +54,13 @@ export class UserService {
       where: { email: loginDto.email, password: loginDto.password },
     });
 
-    if (user) {
+    if (user!==null) {
       return {
         status: "Login successful",
         user_id: user.user_id,
-        key : user.key
+        key : user.key,
+        username: user.name,
+        avatar: user.avatar
       };
     }
     throw new UnauthorizedException("Invalid Credentials");
@@ -56,7 +68,7 @@ export class UserService {
 
   async getUser(id: string) {
     const user = await this.userRepository.findOne({ where: { user_id: id } });
-    if (user) {
+    if (user!==null) {
       return {
         name: user.name,
         avatar: user.avatar,
@@ -71,7 +83,7 @@ export class UserService {
 
   async updateUser(id: string, userInput: Partial<UpdateUserDto>) {
     const checkUser  = await this.userRepository.findOne({where : {user_id: id , key: userInput.key}});
-    if(checkUser){
+    if(checkUser!==null){
       const user = await this.userRepository.update(id, userInput);
       return {
         status: "Updated successfully",

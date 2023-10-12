@@ -27,6 +27,19 @@
 
         .input{
             margin-top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .avatarBtn{
+                width: fit-content;
+                padding: 15px;
+                background: linear-gradient(270deg,#ff00ea,#5100ff);
+                cursor: pointer;
+                color: white;
+                border-radius: 10px;
+    
+            }
             input{
                 width: 100%;
                 background-color: transparent;

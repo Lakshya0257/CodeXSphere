@@ -13,7 +13,7 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get('login')
+  @Post('login')
   findOne(@Body() loginDto: LoginDto) {
     return this.userService.login(loginDto);
   }

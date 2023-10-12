@@ -15,14 +15,13 @@ export class NavButtonComponent {
     return this.router.url===route;
   }
 
-  isLogin(){
-    console.log('loginnn');
-    const cookieValue = document.cookie
-  .split("; ")
-  .find((row) => row.startsWith("userId="))
-  ?.split("=")[1];
+  navigate(route: string){
+    this.router.navigate([route]);
+  }
 
-  if(cookieValue === undefined){
+  isLogin(){
+
+  if(localStorage.getItem("key") === null){
     this.router.navigate(["login"]);
   }else{
     this.router.navigate(["projects/new"]);

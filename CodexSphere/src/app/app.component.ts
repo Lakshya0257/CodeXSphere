@@ -1,5 +1,5 @@
 import { Component, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
-import { ErrorService } from './error/error.service';
+import { HelperService } from './global-services/helper/helper.service';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +9,11 @@ import { ErrorService } from './error/error.service';
 export class AppComponent implements AfterViewInit {
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
 
-  constructor(private errorService: ErrorService) {}
+  constructor(private helperService: HelperService) {}
 
   ngAfterViewInit() {
     console.log(this.container);
-    this.errorService.container = this.container;
+    this.helperService.container = this.container;
   }
 
   title = 'CodexSphere';

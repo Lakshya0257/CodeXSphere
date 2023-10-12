@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { LoginRoutingModule } from './login-routing.module';
 import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
+import { LoginService } from './login.service';
 
 
 
@@ -16,6 +17,7 @@ import { ProfileComponent } from './profile/profile.component';
   imports: [
     CommonModule,
     LoginRoutingModule
-  ]
+  ],
+  providers:[LoginService]
 })
 export class LoginModule { }
