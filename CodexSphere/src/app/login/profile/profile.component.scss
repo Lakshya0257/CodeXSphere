@@ -40,6 +40,9 @@
                 border-radius: 10px;
     
             }
+            label:active{
+                transform: scale(0.9);
+            }
             input{
                 width: 100%;
                 background-color: transparent;
