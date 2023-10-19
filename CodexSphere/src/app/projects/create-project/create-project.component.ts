@@ -11,12 +11,13 @@ import InlineCode from '@editorjs/inline-code';
 // @ts-ignore
 import Embed from '@editorjs/embed';
 import { ProjectService } from '../project.service';
+import { UserStoreService } from 'src/app/global-services/store-service/user-service.service';
 
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
-  encapsulation:ViewEncapsulation.Emulated
+  encapsulation:ViewEncapsulation.None
 })
 export class CreateProjectComponent implements AfterViewInit {
 
@@ -29,12 +30,35 @@ export class CreateProjectComponent implements AfterViewInit {
   private editor: EditorJS | undefined;
 
   title : String = "";
+  tagInput : String = "";
+  tags: Array<String> = [];
+  dbTags: Array<String> = [];
   imagePreview: String | ArrayBuffer ="https://penji.co/wp-content/uploads/2021/07/What-is-an-Illustration-Project-and-How-Do-I-Order-One.jpg";
 
-  constructor(private v : ProjectService = inject(ProjectService)) { }
+  constructor(private v : ProjectService = inject(ProjectService) , private readonly userStore: UserStoreService) { }
 
   ngAfterViewInit(): void {
     this.initializeEditor();
+    this.getDBTags();
+
+  }
+
+
+  addTag(event: KeyboardEvent){
+    if(event.key==="Enter"){
+      if(this.tagInput!=="" && this.tags.length<5){
+        this.tags.push(this.tagInput);
+        this.tagInput="";
+      }
+    }
+  }
+
+  async getDBTags(){
+    this.dbTags =  await this.v.getTags();
+  }
+
+  deleteTag(index: number){
+    this.tags.splice(index,1);
   }
 
   handleTitle(event:any):void{
@@ -100,11 +124,22 @@ export class CreateProjectComponent implements AfterViewInit {
     });
   }
  
-  saveData() {
+  async saveData() {
+    // if(this.tags.length!==0){
+    //   const output = JSON.stringify({
+    //     user_id: this.userStore.userId,
+    //     key: this.userStore.key,
+    //     post_tags: this.tags
+    //   });
+    //   await this.v.postTags(output);
+    // }
+
     if(this.imagePreview==="https://penji.co/wp-content/uploads/2021/07/What-is-an-Illustration-Project-and-How-Do-I-Order-One.jpg"){
       console.warn('Please select a project thumbnail');
     }else if(this.title===""){
       console.warn('Please enter a valid title');
+    }else if(this.tags.length===0){
+      console.warn("Please enter atleast one tag");
     }else{
       this.editor?.save().then(data => {
         console.dir(data);
@@ -113,8 +148,9 @@ export class CreateProjectComponent implements AfterViewInit {
           heading : this.title,
           thumbnail_url : "testing",
           body : JSON.stringify(data),
-          userId : '44545',
-          key : "4554484"
+          user_id : this.userStore.userId,
+          key : this.userStore.key,
+          new_tags : this.tags
         });
         this.v.postBlog(output);
       })

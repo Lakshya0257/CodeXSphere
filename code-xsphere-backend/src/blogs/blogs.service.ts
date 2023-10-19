@@ -12,12 +12,18 @@ import { User } from "src/user/entities/user.entity";
 import { Comments } from "./entities/comments.entity";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { UserCredsDto } from "./dto/user-creds.dto";
+import { Tag } from "src/tags/entities/tag.entity";
+import { TagsService } from "src/tags/tags.service";
+import { CreateTagDto } from "src/tags/dto/create-tag.dto";
+import { UpdateTagDto } from "src/tags/dto/update-tag.dto";
 
 @Injectable()
 export class BlogsService {
   constructor(
     @InjectRepository(Blog) private readonly blogRepository: Repository<Blog>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
+    private tagService: TagsService,
     @InjectRepository(Comments)
     private readonly commentsRepository: Repository<Comments>
   ) {}
@@ -26,18 +32,28 @@ export class BlogsService {
 
   async create(createBlogDto: CreateBlogDto): Promise<Blog> {
     const checkUser = await this.userRepository.findOne({
-      where: { user_id: createBlogDto.userId , key : createBlogDto.key },
+      where: { user_id: createBlogDto.user_id , key : createBlogDto.key },
     }); 
-    if (!checkUser) {
+    console.log(checkUser);
+    if (checkUser===null) {
       throw new NotFoundException("User not found");
     } else {
+      
       let blog: Blog = new Blog();
       blog.thumbnail_url = createBlogDto.thumbnail_url;
       blog.heading = createBlogDto.heading;
       blog.body = createBlogDto.body;
-      blog.user_id = createBlogDto.userId;
+      blog.user_id = createBlogDto.user_id;
       blog.likes = [];
-      return this.blogRepository.save(blog);
+      blog.tags = createBlogDto.tags;
+      const blogPost = await this.blogRepository.save(blog);
+
+      let updateTag = new UpdateTagDto();
+      updateTag.blog_id=blogPost.blog_id;
+      updateTag.tags=createBlogDto.tags;
+      await this.tagService.updateTagsWithUnknown(updateTag);
+
+      return blogPost;
     }
   }
 

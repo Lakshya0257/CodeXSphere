@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BlogsModule } from './blogs/blogs.module';
 import { UserModule } from './user/user.module';
+import { TagsModule } from './tags/tags.module';
 import * as cors from 'cors';
 
 @Module({
@@ -39,7 +40,8 @@ import * as cors from 'cors';
     // }),
     // DatabaseConnectionModule,
     BlogsModule,
-    UserModule],
+    UserModule,
+    TagsModule],
   controllers: [AppController],
   providers: [AppService],
 })

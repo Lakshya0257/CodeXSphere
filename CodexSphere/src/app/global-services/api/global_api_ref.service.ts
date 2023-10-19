@@ -10,4 +10,7 @@ export class ApiHelperService {
     user : string = "http://localhost:3000/user";
     login : string = "http://localhost:3000/user/login";
     signup : string = "http://localhost:3000/user/signup";
+    tags : string = "http://localhost:3000/tags";
+
+    
 }

@@ -5,9 +5,21 @@ import axios from "axios";
 @Injectable()
 export class ProjectService {
     constructor(private apiHelper : ApiHelperService){}
-  postBlog(data : string){
+
+  async postBlog(data : string){
     console.log(data);
-    const result = axios.post(this.apiHelper.project,JSON.parse(data));
+    const result = await axios.post(this.apiHelper.project,JSON.parse(data));
     console.log(result);
   }
+
+  async getTags(){
+    const result = await axios.get(this.apiHelper.tags);
+    console.log(result);
+    return result['data'];
+  }
+
+  // async postTags(tags: string){
+  //   const result = await axios.post(this.apiHelper.tags,JSON.parse(tags));
+  //   console.log(result);
+  // }
 }

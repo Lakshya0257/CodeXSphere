@@ -1,3 +1,5 @@
+@import "../../../styles.scss";
+
 .contentss{
     color: grey;
     overflow-y: auto;
@@ -33,6 +35,7 @@
     }
       
       .title-area{
+        margin-top: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -59,39 +62,129 @@
 
     .cover{
         width: 100%;
-        height: 400px;
+        height: fit-content;
         object-fit: cover ;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
         .cover-image{
-            width: 100%;
+            width: 70%;
             height: 400px;
             object-fit: cover;
-            border-radius: 20px;
+            border-radius: 5px;
+        }
+
+        .input{
+            min-height: fit-content;
+            width: 50%;
+            margin-top: 10px;
+            height: 100%;
+            display: flex;
+            justify-content: start;
+            align-items: start;
+            flex-direction: column;
+            border-bottom: solid 1px rgba(43, 43, 43, 0.719);
+
+            h1{
+                margin-top: 40px;
+                font-size: 2rem;
+                color: white;
+                text-align: start;
+                width: 100%;
+                margin-bottom: 40px;
+            }
+
+            .helper{
+                margin-left: 10%;
+                margin-top: 1%;
+                margin-bottom: 2%;
+            }
+    
+            .thumbButtn{
+                width: fit-content;
+                padding: 15px;
+                background: linear-gradient(270deg,#ff00ea,#5100ff);
+                cursor: pointer;
+                color: white;
+                border-radius: 10px;
+    
+            }
+    
+            label:active{
+                transform: scale(0.9);
+            }
+
+
+            .tag-heading{
+                display: flex;
+                align-items: center;
+                justify-content: start;
+                width: 100%;
+
+                p{
+                    width: 10%;
+                    font-size: 1rem;
+                    // margin-right: 20px;
+                }
+            }
+
+            .tags{
+                width: 60%;
+                height: 40px;
+                background-color: rgba(54, 54, 54, 0.294);
+                border-radius: 5px;
+                color: $lightgrey;
+                border: solid 1px $dark-grey;
+                margin: 10px 0;
+                padding: 0 15px;
+            }
+
+            input.active{
+                border-color: $lightgrey;
+            }
+
+            p{
+                font-size: .9em;
+            }
+
+            .selected{
+                margin-left: 10%;
+                width: 100%;
+                height: fit-content;
+                display: flex;
+                flex-wrap: wrap;
+                margin-bottom: 50px;
+
+                .tag{
+                    background-color: rgba(54, 54, 54, 0.294);
+                    border-radius: 5px;
+                    width: fit-content;
+                    height: fit-content;
+                    padding: 10px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 5px 10px;
+                    overflow-y: auto;
+
+                    p{
+                        margin-right: 10px;
+                        
+                    }
+
+                    i{
+                        font-size: .9em;
+                    }
+                }
+            }
+
+
         }
     }
 
-    .input{
-        min-height: fit-content;
-        width: 100%;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .thumbButtn{
-            width: fit-content;
-            padding: 15px;
-            background: linear-gradient(270deg,#ff00ea,#5100ff);
-            cursor: pointer;
-            color: white;
-            border-radius: 10px;
-
-        }
-
-        label:active{
-            transform: scale(0.9);
-        }
-    }
+    
     
     
 }

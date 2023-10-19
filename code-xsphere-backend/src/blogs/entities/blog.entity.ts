@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { CommonBlog } from "./common/common.entity";
@@ -21,5 +22,9 @@ export class Blog extends CommonBlog {
   body: string;
 
   @CreateDateColumn()
+  @Index()
   dateCreated: Date;
+
+  @Column('text', { array: true, default: [] })
+  tags: string[];
 }
