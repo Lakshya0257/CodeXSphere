@@ -1,180 +1,226 @@
 import {
+  HttpException,
+  HttpStatus,
   Injectable,
-  NotFoundException,
-  UnauthorizedException,
 } from "@nestjs/common";
 import { CreateBlogDto } from "./dto/create-blog.dto";
 import { UpdateBlogDto } from "./dto/update-blog.dto";
 import { Blog } from "./entities/blog.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "src/user/entities/user.entity";
 import { Comments } from "./entities/comments.entity";
 import { CreateCommentDto } from "./dto/create-comment.dto";
-import { UserCredsDto } from "./dto/user-creds.dto";
-import { Tag } from "src/tags/entities/tag.entity";
-import { TagsService } from "src/tags/tags.service";
-import { CreateTagDto } from "src/tags/dto/create-tag.dto";
-import { UpdateTagDto } from "src/tags/dto/update-tag.dto";
+import { MediaType } from "src/common/entity/media-type.entity";
+import { Media } from "src/common/entity/media.entity";
+import { Usernames } from "src/common/entity/username.entity";
+import { Tags } from "./entities/tags.entity";
+import { OptionalUserCredsDto, UserCredsDto } from "src/common/dtos/user-creds.dto";
+import { Profile } from "src/user/entities/profile.entity";
+import { BlogLikes } from "./entities/likes.entity";
 
 @Injectable()
 export class BlogsService {
   constructor(
     @InjectRepository(Blog) private readonly blogRepository: Repository<Blog>,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
-    private tagService: TagsService,
+    @InjectRepository(MediaType) private readonly mediaTypeRepository: Repository<MediaType>,
+    @InjectRepository(Profile) private readonly profileRepository: Repository<Profile>,
+    @InjectRepository(BlogLikes) private readonly blogLikesRepository: Repository<BlogLikes>,
+    @InjectRepository(Usernames) private readonly usernamesRepository: Repository<Usernames>,
+    @InjectRepository(Tags) private readonly tagsRepository: Repository<Tags>,
     @InjectRepository(Comments)
     private readonly commentsRepository: Repository<Comments>
   ) {}
 
   //Blogs services methods
-
   async create(createBlogDto: CreateBlogDto): Promise<Blog> {
-    const checkUser = await this.userRepository.findOne({
-      where: { user_id: createBlogDto.user_id , key : createBlogDto.key },
-    }); 
-    console.log(checkUser);
-    if (checkUser===null) {
-      throw new NotFoundException("User not found");
-    } else {
-      
-      let blog: Blog = new Blog();
-      blog.thumbnail_url = createBlogDto.thumbnail_url;
-      blog.heading = createBlogDto.heading;
-      blog.body = createBlogDto.body;
-      blog.user_id = createBlogDto.user_id;
-      blog.likes = [];
-      blog.tags = createBlogDto.tags;
-      const blogPost = await this.blogRepository.save(blog);
-
-      let updateTag = new UpdateTagDto();
-      updateTag.blog_id=blogPost.blog_id;
-      updateTag.tags=createBlogDto.tags;
-      await this.tagService.updateTagsWithUnknown(updateTag);
-
-      return blogPost;
+    let media_type: MediaType = await this.mediaTypeRepository.findOne({ where: {type: 'blog'} })
+    if(media_type===null){
+      const newMedia: MediaType = new MediaType({type: 'blog'});
+      media_type = await this.mediaTypeRepository.save(newMedia);
     }
-  }
-
-  findAll(): Promise<Blog[]> {
-    return this.blogRepository.find();
-  }
-
-  getUserBlogs(id: string) {
-    return this.blogRepository.find({ where: { user_id: id } });
-  }
-
-  async followingBlogs(userCredsDto : UserCredsDto){
-    const user = await this.userRepository.findOne({ where: { user_id: userCredsDto.user_id , key:userCredsDto.key} });
-    if (user) {
-      let blogs: Blog[];
-      for (let id of user.following_ids) {
-        (await this.getUserBlogs(id)).forEach((blog) => {
-          blogs.push(blog);
-        });
+    let media : Media = new Media({'image': createBlogDto.thumbnail_url, 'media_type': media_type})
+    let tagsList: Tags[] = [];
+    for(const tag of createBlogDto.tags){
+      const getTag: Tags = await this.tagsRepository.findOne({ where: {'tag_name': tag}})
+      if(getTag){
+        tagsList.push(getTag);
+      }else{
+        const newTag: Tags = new Tags({tag_name: tag});
+        tagsList.push(await this.tagsRepository.save(newTag));
       }
-
-      return {
-        status: "success",
-        data: blogs,
-      };
     }
-    throw new UnauthorizedException("Invalid Credentials");
+    let blog : Blog = new Blog({'body': createBlogDto.body,'user': createBlogDto.user_id, 'title': createBlogDto.title, thumbnail: media, tags: tagsList})
+    return await this.blogRepository.save(blog);
   }
 
-  async deleteBlog(blog_id: string, userCreds: UserCredsDto) {
-    const blog = await this.blogRepository.findOne({
-      where: { blog_id:blog_id },
-    });
 
-    const user = await this.userRepository.findOne({where: { user_id: userCreds.user_id , key: userCreds.key}})
-
-    if (blog.user_id !== userCreds.user_id || !user) {
-      throw new UnauthorizedException("Unauthorized access");
-    } else {
-      await this.blogRepository.delete(blog_id);
-      return {
-        status: "deleted",
-      };
-    }
-  }
 
   async updateBlog(blog_id:string, updateBlogDto: UpdateBlogDto){
-    const user = await this.userRepository.findOne({ where: {user_id: updateBlogDto.userId, key: updateBlogDto.key}});
-    if(user){
-      const blog = await this.blogRepository.update({user_id: user.user_id, blog_id: blog_id} , updateBlogDto);
-      return {
-        'status': 'updated',
-        data : blog
-      }
-    }else{
-      throw new UnauthorizedException("Invalid Credentials");
+    let blog = await this.blogRepository.findOne({where: {blog_id: blog_id, user: updateBlogDto.user_id},relations:['thumbnail','tags']});
+    if(!blog){
+      return new HttpException('Blog not found', HttpStatus.NOT_FOUND);
     }
+    blog.body=updateBlogDto.body;
+    blog.title=updateBlogDto.title;
+    blog.thumbnail.image=updateBlogDto.thumbnail_url;
+    if(updateBlogDto.tags!==null && updateBlogDto.tags.length!==0){
+      let tagsList: Tags[] = [];
+      for(const tag of updateBlogDto.tags){
+      const getTag: Tags = await this.tagsRepository.findOne({ where: {'tag_name': tag}})
+      if(getTag){
+        tagsList.push(getTag);
+      }else{
+        const newTag: Tags = new Tags({tag_name: tag});
+        tagsList.push(await this.tagsRepository.save(newTag));
+      }
+    }
+    blog.tags=tagsList;
+    }
+    await this.blogRepository.save(blog);
+    return {
+      'status': 'success',
+      'data': 'Updated successfully'
+    }
+  }
+
+
+  async deleteBlog(blog_id:string, userCreds: UserCredsDto){
+    const blog = await this.blogRepository.findOne({where: {blog_id: blog_id, user: userCreds.user_id}});
+    if(!blog){
+      return new HttpException('Blog not found', HttpStatus.NOT_FOUND);
+    }
+    await this.blogRepository.remove(blog);
+    return {
+      status: 'success',
+      "data": "Deleted successfully"
+    }
+  }
+
+  async getAllTags(){
+    return await this.tagsRepository.find();
+  }
+
+  async getBlogsOfTag(tagId: string, curUser: OptionalUserCredsDto){
+    const blogs = await this.tagsRepository.findOne({ where: {tag_id: tagId},relations: ['blogs','blogs.thumbnail','blogs.creator','blogs.creator.avatar','blogs.tags']});
+    if(curUser.user_id){
+      for(const blog of blogs.blogs){
+        const liked = await this.blogLikesRepository.findOne({where: {blog_id: blog.blog_id, user_id: curUser.user_id}});
+        if(liked){
+          blog['liked']= true;
+        }else{
+          blog['liked']= false;
+        }
+      }
+      return blogs;
+    }
+    return blogs;
     
   }
+
+  async followingBlogs(userCreds: UserCredsDto){
+    const user = await this.profileRepository.findOne({ where: {user_id: userCreds.user_id},relations: ['following_to']});
+    let blogList :Blog[] = [];
+    for(const following_user of user.following_to){
+      const blogs = await this.blogRepository.find({where: {user: following_user.following_id}, relations:['thumbnail','creator','creator.avatar','tags']});
+      for(const blog of blogs){
+        const liked = await this.blogLikesRepository.findOne({where: {blog_id: blog.blog_id, user_id: userCreds.user_id}});
+        if(liked){
+          blog['liked']= true;
+        }else{
+          blog['liked']= false;
+        }
+      }
+      blogList.concat(blogs);
+    }
+    return blogList;
+  }
+
+  async findAll(user: OptionalUserCredsDto): Promise<Blog[]> {
+    const blogs = await this.blogRepository.find();
+    if(user.user_id){
+      for(const blog of blogs){
+        const liked = await this.blogLikesRepository.findOne({where: {blog_id: blog.blog_id, user_id: user.user_id}});
+        if(liked){
+          blog['liked']= true;
+        }else{
+          blog['liked']= false;
+        }
+      }
+      return blogs;
+    }
+    return blogs;
+  }
+
+  async getUserBlogs(id: string, user: OptionalUserCredsDto) {
+    const blogs= await this.blogRepository.find({ where: { user: id } });
+    if(user.user_id){
+      for(const blog of blogs){
+        const liked = await this.blogLikesRepository.findOne({where: {blog_id: blog.blog_id, user_id: user.user_id}});
+        if(liked){
+          blog['liked']= true;
+        }else{
+          blog['liked']= false;
+        }
+      }
+      return blogs;
+    }
+    return blogs;
+  }
+
+
+
+
+  //Helpers
+  async updateTotalLikes(blogId: string) {
+    const blog = await this.blogRepository.findOne({where:{ blog_id: blogId}, relations: ['liked_users']});
+
+    if (blog) {
+      blog.total_likes = blog.liked_users.length;
+      await this.blogRepository.save(blog);
+    }
+  }
+
+ 
 
 
 
 
   //Comment service methods
-
   async getComments(blog_id: string) {
-    const blogComments = await this.commentsRepository.find({
+    return await this.commentsRepository.find({
       where: { blog_id: blog_id },
     });
-    return {
-      status: "success",
-      data: blogComments,
-    };
   }
 
   async deleteComment(userCreds: UserCredsDto, comment_id: string) {
-    const comment = await this.commentsRepository.findOne({
-      where: { comment_id: comment_id },
-    });
-    const user = await this.userRepository.findOne({where: { user_id: userCreds.user_id , key: userCreds.key}})
-    if (comment.user_id === userCreds.user_id && user) {
-      await this.commentsRepository.delete(comment_id);
+    const comment = await this.commentsRepository.findOne({where: {comment_id: comment_id , user_id: userCreds.user_id}})
+    if(comment){
+      await this.commentsRepository.delete(comment);
       return {
-        status: "deleted",
-      };
-    } else {
-      throw new UnauthorizedException("Invalid Credentials");
-    }
-  }
-
-  async likeComment(comment_id: string, userCreds: UserCredsDto){
-    const user = await this.userRepository.findOne({ where: { user_id:userCreds.user_id , key:userCreds.key } });
-    if (user) {
-      const getComment = await this.commentsRepository.findOne({
-        where: { comment_id: comment_id },
-      });
-      if (getComment.likes.includes(user.user_id)) {
-        getComment.likes.splice(getComment.likes.indexOf(user.user_id), 1);
-      } else {
-        getComment.likes.push(user.user_id);
+        "status": "success",
+        "message": "Comment deleted successfully"
       }
-      await this.commentsRepository.update(comment_id, getComment);
-      return {
-        status: "success",
-      };
-    } else {
-      throw new UnauthorizedException("Unauthorized access");
     }
+    throw new HttpException("Incorrect credentials or comment_id", HttpStatus.BAD_REQUEST)
   }
 
-  async postComment(newCommentDto: CreateCommentDto){
-    const user = await this.userRepository.findOne({ where: { user_id: newCommentDto.user_id , key: newCommentDto.key} });
-    if(user){
-      let comment = new Comments();
-      comment.blog_id= newCommentDto.blog_id;
-      comment.comment=newCommentDto.comment;
-      comment.likes=[];
-      comment.user_id=newCommentDto.user_id;
-      return this.commentsRepository.save(comment);
-    }else{
-      throw new UnauthorizedException("Unauthorized access");
+  async updateComment(comment_id: string,update: CreateCommentDto) {
+    const comment = await this.commentsRepository.findOne({where: {comment_id: comment_id , user_id: update.user_id}})
+    if(comment){
+      comment.comment=update.comment;
+      await this.commentsRepository.save(comment);
+      return {
+        "status": "success",
+        "message": "Comment updated successfully"
+      }
     }
+    throw new HttpException("Incorrect credentials or comment_id", HttpStatus.BAD_REQUEST)
   }
+
+  async postComment(blog_id:string,newCommentDto: CreateCommentDto){
+    const comment: Comments = new Comments({user_id:newCommentDto.user_id, comment: newCommentDto.comment,blog_id:blog_id});
+    return await this.commentsRepository.save(comment);
+  }
+
+
 }

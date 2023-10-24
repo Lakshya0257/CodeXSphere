@@ -7,7 +7,7 @@ export class ProjectService {
     constructor(private apiHelper : ApiHelperService){}
 
   async postBlog(data : string){
-    console.log(data);
+    // console.log(data);
     const result = await axios.post(this.apiHelper.project,JSON.parse(data));
     console.log(result);
   }

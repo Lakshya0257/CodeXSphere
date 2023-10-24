@@ -3,16 +3,19 @@ import { BlogsService } from './blogs.service';
 import { BlogsController } from './blogs.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Blog } from './entities/blog.entity';
-import { User } from 'src/user/entities/user.entity';
 import { Comments } from './entities/comments.entity';
-import { Tag } from 'src/tags/entities/tag.entity';
-import { TagsService } from 'src/tags/tags.service';
+import { MediaType } from 'src/common/entity/media-type.entity';
+import { Tags } from './entities/tags.entity';
+import { Usernames } from 'src/common/entity/username.entity';
+import { Credentials } from 'src/user/entities/creds.entity';
+import { Profile } from 'src/user/entities/profile.entity';
+import { BlogLikes } from './entities/likes.entity';
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([Blog , User, Comments, Tag])
+    TypeOrmModule.forFeature([Blog , Comments, MediaType, Tags, Usernames, Credentials, Profile, BlogLikes])
   ],
   controllers: [BlogsController],
-  providers: [BlogsService, TagsService],
+  providers: [BlogsService],
 })
 export class BlogsModule {}

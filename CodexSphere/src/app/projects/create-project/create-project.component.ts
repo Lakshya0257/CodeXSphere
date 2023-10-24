@@ -124,7 +124,7 @@ export class CreateProjectComponent implements AfterViewInit {
     });
   }
  
-  async saveData() {
+  saveData() {
     // if(this.tags.length!==0){
     //   const output = JSON.stringify({
     //     user_id: this.userStore.userId,
@@ -141,7 +141,7 @@ export class CreateProjectComponent implements AfterViewInit {
     }else if(this.tags.length===0){
       console.warn("Please enter atleast one tag");
     }else{
-      this.editor?.save().then(data => {
+      this.editor?.save().then(async data => {
         console.dir(data);
         const value = JSON.stringify(data);
         const output = JSON.stringify({
@@ -150,9 +150,9 @@ export class CreateProjectComponent implements AfterViewInit {
           body : JSON.stringify(data),
           user_id : this.userStore.userId,
           key : this.userStore.key,
-          new_tags : this.tags
+          tags : this.tags
         });
-        this.v.postBlog(output);
+        await this.v.postBlog(output);
       })
     }
     

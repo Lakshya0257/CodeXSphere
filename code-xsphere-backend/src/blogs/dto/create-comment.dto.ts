@@ -1,6 +1,7 @@
-export class CreateCommentDto{
-    blog_id: string;
+import { IsNotEmpty } from "class-validator";
+import { UserCredsDto } from "src/common/dtos/user-creds.dto";
+
+export class CreateCommentDto extends UserCredsDto{
+    @IsNotEmpty({always: true})
     comment: string;
-    user_id: string;
-    key: string;
 }

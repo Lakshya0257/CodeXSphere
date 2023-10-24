@@ -1,7 +1,9 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateBlogDto } from './create-blog.dto';
+import { UserCredsDto } from "src/common/dtos/user-creds.dto";
 
-export class UpdateBlogDto extends PartialType(CreateBlogDto) {
-    key: string;
-    userId: string;
+export class UpdateBlogDto extends UserCredsDto {
+
+    thumbnail_url: string;
+    title: string;
+    body: string;
+    tags: string[];
 }

@@ -1,8 +1,13 @@
-export class CreateBlogDto {
+import { IsNotEmpty } from "class-validator";
+import { UserCredsDto } from "src/common/dtos/user-creds.dto";
+
+export class CreateBlogDto extends UserCredsDto {
+
+    @IsNotEmpty({always:true})
     thumbnail_url: string;
-    heading: string;
+    @IsNotEmpty({always:true})
+    title: string;
+    @IsNotEmpty({always:true})
     body: string;
-    user_id: string;
-    key: string;
     tags: string[];
 }

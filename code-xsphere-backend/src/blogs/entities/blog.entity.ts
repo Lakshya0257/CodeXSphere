@@ -1,30 +1,56 @@
+import { Media } from "src/common/entity/media.entity";
+import { Usernames } from "src/common/entity/username.entity";
 import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { CommonBlog } from "./common/common.entity";
+import { Tags } from "./tags.entity";
+import { BlogLikes } from "./likes.entity";
+import { Comments } from "./comments.entity";
+import { AbstractEntity } from "src/common/helper_entity/abstract.entity";
 
 @Entity()
-export class Blog extends CommonBlog {
+export class Blog extends AbstractEntity<Blog>{
   @PrimaryGeneratedColumn("uuid")
   blog_id: string;
 
-  @Column()
-  thumbnail_url: string;
+  @Column('uuid')
+  user: string;
+
+  @ManyToOne(() => Usernames, { onDelete: 'CASCADE'})
+  @JoinColumn({ name: "user" })
+  creator: Usernames;
+
+  @Column({ default: 0 }) // Initialize total_likes with 0
+  total_likes: number;
 
   @Column()
-  heading: string;
+  title: string;
+
+  @OneToOne(()=>Media,(media)=>media.blog, {cascade: true})
+  thumbnail: Media;
+
+  @CreateDateColumn()
+  date_created: Date;
 
   @Column()
   body: string;
 
-  @CreateDateColumn()
-  @Index()
-  dateCreated: Date;
+  @ManyToMany(()=>Tags, (tag)=>tag.blogs, { cascade: true })
+  @JoinTable()
+  tags: Tags[]
 
-  @Column('text', { array: true, default: [] })
-  tags: string[];
+  @OneToMany(()=>BlogLikes, (likes)=>likes.blog )
+  liked_users: BlogLikes[];
+
+  @OneToMany(()=>Comments,(comment)=>comment.blog)
+  comments: Comments[];
 }

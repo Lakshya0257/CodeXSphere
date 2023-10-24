@@ -1,35 +1,75 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginDto } from './dto/login-user.dto';
+import { ProfileDto } from './dto/create-user.dto';
+import { UserAuthGuard } from 'src/helpers/guards/user-auth/user-auth.guard';
+import { DeleteUserDto } from './dto/delete-user.dto';
+import { UpdateProfileDto } from './dto/update-user.dto';
+import { OptionalUserCredsDto, UserCredsDto } from 'src/common/dtos/user-creds.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('signup')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  create(@Body() loginDto: LoginDto) {
+    return this.userService.signup(loginDto);
   }
 
   @Post('login')
-  findOne(@Body() loginDto: LoginDto) {
+  login(@Body() loginDto: LoginDto) {
     return this.userService.login(loginDto);
   }
 
-  @Get(':id')
-  user(@Param('id') id: string) {
-    return this.userService.getUser(id);
+  @Post('create')
+  @UseGuards(UserAuthGuard)
+  createProfile(@Body() createUserDto: ProfileDto){
+    return this.userService.createUser(createUserDto);
   }
 
-  @Post('update/:id')
-  updateUser(@Param('id') id: string , @Body() updateDto: Partial<UpdateUserDto>) {
-    return this.userService.updateUser(id, updateDto);
+  @Delete('delete')
+  deleteUser(@Body() deleteUserDto: DeleteUserDto){
+    return this.userService.deleteUser(deleteUserDto);
   }
 
-  @Delete(':id/:key')
-  remove(@Param('id') id: string, @Param('key') key: string) {
-    return this.userService.remove(id,key);
+  @Get(':user_id')
+  @UseGuards(UserAuthGuard)
+  user(@Param('user_id') id: string, @Body() user: OptionalUserCredsDto) {
+    return this.userService.getUser(id, user);
   }
+
+  @Post('update')
+  @UseGuards(UserAuthGuard)
+  updateUser(@Body() updateProfile : UpdateProfileDto) {
+    return this.userService.updateUser(updateProfile);
+  }
+
+
+  @Post('follow/:user_id')
+  @UseGuards(UserAuthGuard)
+  followUser(@Param('user_id') id: string, @Body() userCreds :UserCredsDto){
+    return this.userService.followUser(id, userCreds);
+  }
+
+  @Get('followings/:user_id')
+  getFollowings(){
+
+  }
+
+  @Get('/follwers/:user_id')
+  getFollowers(){
+
+  }
+
+  @Get('bookmarks')
+  getBookmarks(){
+
+  }
+
+  @Post('bookmarks/:blog_id')
+  postBookmark(){
+    
+  }
+
+
 }

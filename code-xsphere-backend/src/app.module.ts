@@ -4,11 +4,12 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BlogsModule } from './blogs/blogs.module';
 import { UserModule } from './user/user.module';
-import { TagsModule } from './tags/tags.module';
 import * as cors from 'cors';
+import { Credentials } from './user/entities/creds.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Credentials]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host:'ep-crimson-firefly-70756794.ap-southeast-1.aws.neon.tech',
@@ -40,8 +41,7 @@ import * as cors from 'cors';
     // }),
     // DatabaseConnectionModule,
     BlogsModule,
-    UserModule,
-    TagsModule],
+    UserModule,],
   controllers: [AppController],
   providers: [AppService],
 })
