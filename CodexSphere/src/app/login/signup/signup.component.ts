@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, ViewContainerRef, ViewEncapsulation }
 import { Router } from '@angular/router';
 import { LoginService } from '../login.service';
 import { ErrorService } from 'src/app/global-services/error/error.service';
+import { HelperService } from 'src/app/global-services/helper/helper.service';
 
 @Component({
   selector: 'app-signup',
@@ -10,7 +11,7 @@ import { ErrorService } from 'src/app/global-services/error/error.service';
   encapsulation:ViewEncapsulation.Emulated
 })
 export class SignupComponent {
-  constructor(private router : Router , private errorService : ErrorService, private loginService : LoginService){
+  constructor(private router : Router , private errorService : ErrorService, private loginService : LoginService, private helperService: HelperService){
   }
 
   @ViewChild('email') email : ElementRef | undefined ;
@@ -18,12 +19,19 @@ export class SignupComponent {
   @ViewChild('confirmPass') confirmPass : ElementRef | undefined ;
   
 
-  signup(){
-    const result=this.errorService.checkPassword(this.password?.nativeElement.value,this.confirmPass?.nativeElement.value);
-    if(result!=="Error"){
+  async signup(){
+    if(this.email?.nativeElement.value === ""){
+      this.helperService.showSnackbar("Please enter your email address")
+    } else if(this.password?.nativeElement.value === ""){
+      this.helperService.showSnackbar("Please enter your password")
+    } else{
+      const result=this.errorService.checkPassword(this.password?.nativeElement.value,this.confirmPass?.nativeElement.value);
+      if(result!=="Error"){
       this.loginService.setLoginDetails(this.email?.nativeElement.value,this.password?.nativeElement.value);
-      this.router.navigate(["login/profile"]);
+      await this.loginService.signUp();
     }
+    }
+    
   }
   
   login(){

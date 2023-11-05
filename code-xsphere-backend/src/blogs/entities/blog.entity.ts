@@ -16,6 +16,7 @@ import { Tags } from "./tags.entity";
 import { BlogLikes } from "./likes.entity";
 import { Comments } from "./comments.entity";
 import { AbstractEntity } from "src/common/helper_entity/abstract.entity";
+import { BlogContent } from "./blog-content.entity";
 
 @Entity()
 export class Blog extends AbstractEntity<Blog>{
@@ -41,8 +42,8 @@ export class Blog extends AbstractEntity<Blog>{
   @CreateDateColumn()
   date_created: Date;
 
-  @Column()
-  body: string;
+  @OneToOne(()=>BlogContent, (blog)=>blog.blog,{cascade: true})
+  body: BlogContent;
 
   @ManyToMany(()=>Tags, (tag)=>tag.blogs, { cascade: true })
   @JoinTable()

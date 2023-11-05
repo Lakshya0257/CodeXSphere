@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from './dto/login-user.dto';
 import { ProfileDto } from './dto/create-user.dto';
@@ -34,7 +34,7 @@ export class UserController {
 
   @Get(':user_id')
   @UseGuards(UserAuthGuard)
-  user(@Param('user_id') id: string, @Body() user: OptionalUserCredsDto) {
+  user(@Param('user_id') id: string, @Query() user: OptionalUserCredsDto) {
     return this.userService.getUser(id, user);
   }
 

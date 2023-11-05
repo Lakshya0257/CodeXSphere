@@ -5,6 +5,7 @@ import { BlogLikes } from "src/blogs/entities/likes.entity";
 import { Comments } from "src/blogs/entities/comments.entity";
 import { Credentials } from "src/user/entities/creds.entity";
 import { AbstractEntity } from "../helper_entity/abstract.entity";
+import { Profile } from "src/user/entities/profile.entity";
 
 @Entity()
 @Unique(['user_id'])
@@ -16,6 +17,9 @@ export class Usernames extends AbstractEntity<Usernames>{
     @OneToOne(()=>Credentials, (creds)=>creds.user, {onDelete: 'CASCADE'})
     @JoinColumn({name: 'user_id', referencedColumnName: 'user_id'})
     credentials: Credentials
+
+    @OneToOne(()=>Profile, (profile)=>profile.user)
+    profile: Profile
 
     @Column()
     username: string;
@@ -32,6 +36,6 @@ export class Usernames extends AbstractEntity<Usernames>{
     @OneToMany(()=>Comments, (comment)=>comment.user)
     comments: Comments[];
     
-    @OneToMany(()=>BlogLikes,(like)=>like.liked_to)
+    @OneToMany(()=>BlogLikes,(like)=>like.liked)
     likes: BlogLikes[];
 }

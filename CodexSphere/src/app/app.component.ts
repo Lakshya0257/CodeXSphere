@@ -9,12 +9,19 @@ import { HelperService } from './global-services/helper/helper.service';
 export class AppComponent implements AfterViewInit {
   @ViewChild('container', { read: ViewContainerRef }) container!: ViewContainerRef;
 
+  
+
   constructor(private helperService: HelperService) {}
 
   ngAfterViewInit() {
     console.log(this.container);
     this.helperService.container = this.container;
   }
+
+  navigate(url: string){
+    window.open(url, '_blank');
+  }
+
 
   title = 'CodexSphere';
 }

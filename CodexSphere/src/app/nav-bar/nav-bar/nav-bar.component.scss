@@ -1,28 +1,61 @@
 @import '../../../styles.scss';
 
 .nav-bar{
-    width: $nav-bar-width;
-    // border-right: 1px solid $lightgrey;
-    height: 100%;
     position: fixed;
     left: 0;
-    padding: 1% 0;
+    right: 0;
+    z-index: 9999;
+    top: 0;
+    height: 70px;
     background-color: black;
 
-    @include vertical-flex-sb;
+    @include flex-display;
+    justify-content: space-between;
+    padding: 0 5%;
 
-    .upper-half{
+    .intro{
+        @include flex-display;
+        height: 50px;
+
         img{
-            margin-left: 5%;
-            margin-bottom: 50px;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             object-fit: cover;
+            margin-right: 5px;
+        }
+
+        p{
+            font-weight: bold;
+            color: white;
+            font-size: $heading;
         }
     }
 
-    img{
-        width: $nav-bar-width;
-        object-fit: cover;
+    .navs{
+        @include flex-display;
+        width: 30%;
+        
+        p{
+            cursor: pointer;
+
+        }
+
+        .selected{
+            color: white
+        }
+    }
+
+    .avatar{
+        @include flex-display;
+        cursor: pointer;
+        img{
+            
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
     }
 }

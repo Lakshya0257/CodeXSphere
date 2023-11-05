@@ -1,0 +1,300 @@
+@import "../../../styles.scss";
+
+.contentss {
+    // margin-left: $margin;
+    // margin-right: $margin;
+    margin-top: 120px;
+    color: grey;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    padding: 0 15%;
+
+    hr{
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.454);
+        margin-bottom: 40px;
+    }
+
+    .blog{
+        width: 100%;
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+
+        .right-side{
+            width: 30%;
+            margin-top: 40px;
+
+            .creator-title, .comments-heading, .tags-heading{
+                font-weight: bold;
+                color: $lightgrey;
+            }
+
+            .comments-heading{
+                margin-bottom: 40px;
+            }
+
+            .comment-input{
+                margin-bottom: 40px;
+                width: 100%;
+                padding: 0 20px;
+                height: 45px;
+                background-color: rgba(49, 49, 49, 0.798);
+                border-radius: 20px;
+
+                input{
+                    background-color: transparent;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 20px;
+                    border: none;
+                    color: $lightgrey;
+                }
+
+                input::target-text{
+                    border: none;
+                }
+
+            }
+            .comment-section{
+                width: 100%;
+                max-height: 600px;
+                overflow-y: auto;
+                position: relative;
+                margin-bottom: 40px;
+                // padding-bottom: 60px;
+
+                
+                .comment{
+                    margin-bottom: 20px;
+                    width: 100%;
+    
+                    .user-info {
+                        display: flex;
+                        justify-content: start;
+                        align-items: center;
+                
+                        .profile-img {
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 50%;
+                            margin-right: 10px;
+                
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                border-radius: 50%;
+                                object-fit: cover;
+                
+                            }
+                        }
+                
+                
+                
+                        p {
+                            color: white;
+                            font-weight: bold;
+                        }
+                    }
+
+                    .inner{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 10px;
+                        .body{
+                            width: 80%;
+                            color: rgb(215, 215, 215);
+                        }
+                        i{
+                            color: red;
+                            font-size: .8rem;
+                        }
+                    }
+    
+                    .body, .time{
+                        margin-left: 40px;
+                    }
+    
+                    
+    
+                    .time{
+                        color: grey;
+                    }
+                }
+            }
+
+            .tags {
+                margin: 40px 0;
+                width: 100%;
+                flex-wrap: wrap;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+        
+                .tag {
+                    background-color: rgba(54, 54, 54, 0.556);
+                    border-radius: 5px;
+                    width: fit-content;
+                    height: fit-content;
+                    padding: 10px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 5px 10px;
+                    overflow-y: auto;
+                }
+            }
+        
+            .info {
+                margin: 40px 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+        
+                .user{
+                    display: flex;
+                    align-items: center;
+
+                    .profile-img {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        margin-right: 10px;
+            
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 50%;
+                            object-fit: cover;
+            
+                        }
+                    }
+
+                    p {
+                        color: white;
+                    }
+                }
+
+                button{
+                    border-radius: 20px;
+                    background: linear-gradient(270deg, #ff00ea, #5100ff);
+                    padding: 10px 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    p{
+                        color: white;
+                    }
+
+                }
+            }
+        }
+
+        .left-side{
+            width: 60%;
+
+            .title {
+                margin-top: 40px;
+                max-width: 100%;
+                overflow: hidden;
+                resize: both;
+                // min-height: 40px;
+                line-height: 35px;
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: white;
+            }
+
+            .sub-option{
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: start;
+                i{
+                    margin-right: 10px;
+                    font-size: 1.1rem;
+                }
+
+                .heart{
+                    color: red;
+                }
+
+                p{
+                    color: rgb(77, 77, 77);
+                }
+            }
+
+            .btns{
+                margin-top: 20px;
+                margin-bottom: 10px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: start;
+
+                button{
+                    padding: 8px 10px;
+                    background-color: rgba(54, 54, 54, 0.556);
+                    border-radius: 10px;
+                    margin: 0 5px;
+                }
+            }
+
+            hr{
+                margin-top: 40px;
+            }
+
+            
+        
+            
+        }
+    }
+
+    .cover {
+        width: 100%;
+        height: fit-content;
+        object-fit: cover;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .cover-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+    }
+
+    
+}
+
+// .comments {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     position: fixed;
+//     z-index: 9999;
+//     right: 50px;
+//     bottom: 50px;
+//     // background: rgb(197,0,218);
+//     background: linear-gradient(270deg, #ff00ea, #5100ff);
+//     padding: 20px;
+//     height: 60px;
+//     width: 60px;
+//     border-radius: 50%;
+//     transition: width 250ms ease-in-out, height 250ms ease-in-out;
+//     cursor: pointer;
+
+//     fa-icon {
+//         color: white;
+//     }
+
+// }

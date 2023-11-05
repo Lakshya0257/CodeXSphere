@@ -6,6 +6,8 @@ export class UsernameDto{
     username: string;
     @IsNotEmpty({always:true})
     avatar: string;
+
+   
 }
 
 export class ProfileDto extends UserCredsDto{
@@ -13,4 +15,7 @@ export class ProfileDto extends UserCredsDto{
     description: string;
     @IsNotEmpty({always:true})
     user: UsernameDto;
+
+    github?: string;
+    linkedin?: string;
 }

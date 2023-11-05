@@ -12,7 +12,7 @@ export class Profile extends AbstractEntity<Profile>{
   @PrimaryColumn('uuid')
   user_id: string;
 
-  @OneToOne(()=>Usernames, {cascade: true ,onDelete:'CASCADE', eager: true})
+  @OneToOne(()=>Usernames, (user)=>user.profile, {cascade: true ,onDelete:'CASCADE'})
   @JoinColumn({name: 'user_id',referencedColumnName:'user_id'})
   user: Usernames;
 

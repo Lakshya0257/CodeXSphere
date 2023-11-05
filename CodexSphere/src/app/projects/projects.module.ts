@@ -4,20 +4,30 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { ProjectRoutingModule } from './projects-routing.module';
 import { ProjectService } from './project.service';
 import { FormsModule } from '@angular/forms';
+import { BlogComponent } from './blog/blog.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CommentComponent } from './comment/comment.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BlogResolver } from './blog.resolver';
 
 
 
 @NgModule({
   declarations: [
-    CreateProjectComponent
+    CreateProjectComponent,
+    BlogComponent,
+    CommentComponent
   ],
   imports: [
     CommonModule,
     ProjectRoutingModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule,
+    MatDialogModule
   ],
   providers:[
-    ProjectService
+    ProjectService,
+    BlogResolver
   ]
 })
 export class ProjectsModule { }

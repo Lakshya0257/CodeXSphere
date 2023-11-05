@@ -8,7 +8,7 @@ const routes: Routes = [
       import('./home/home.module').then((mod) => mod.HomeModule),
   },
   {
-    path: 'projects',
+    path: 'blog',
     loadChildren: () =>
       import('./projects/projects.module').then((mod) => mod.ProjectsModule),
   },
@@ -16,6 +16,11 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () =>
       import('./login/login.module').then((mod) => mod.LoginModule),
+  },
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('./profile/profile.module').then((mod) => mod.ProfileModule),
   },
 ];
 

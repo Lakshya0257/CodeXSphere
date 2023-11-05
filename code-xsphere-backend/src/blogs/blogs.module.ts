@@ -10,10 +10,11 @@ import { Usernames } from 'src/common/entity/username.entity';
 import { Credentials } from 'src/user/entities/creds.entity';
 import { Profile } from 'src/user/entities/profile.entity';
 import { BlogLikes } from './entities/likes.entity';
+import { BlogContent } from './entities/blog-content.entity';
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([Blog , Comments, MediaType, Tags, Usernames, Credentials, Profile, BlogLikes])
+    TypeOrmModule.forFeature([Blog , Comments, MediaType, Tags, Usernames, Credentials, Profile, BlogLikes, BlogContent])
   ],
   controllers: [BlogsController],
   providers: [BlogsService],

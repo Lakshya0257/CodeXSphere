@@ -1,32 +1,120 @@
 @import '../../../styles.scss';
 $shadow : rgb(128, 128, 128);
 .card{
-    width: 15vw;
-    height: fit-content;
-    background-color: rgba(0, 0, 0, 0.349);
+    width: 100%;
+    height: 600px;
+    // background-color: rgba(212, 212, 212, 0.349);
     border-radius: 20px;
-    border: 1px solid rgba(128, 128, 128, 0.185);
+    // border: 1px solid rgba(128, 128, 128, 0.185);
     padding-bottom: 20px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
 
-    img{
+    .thumbnail{
+        position: relative;
         width: 100%;
-        // height: 200px;
-        border-radius: 20px;
-        height: object-fit;
-        object-fit: cover;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        height: 60%;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+    }
+
+    hr{
+        width: 80%;
+        
+        border-top: 0px;
+        border-right: 0;
+        border-left: 0;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.224);
+    }
+
+    .title {
+        height: fit-content;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 5%;
+        margin-right: 5%;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Restrict to 2 lines */
+        -webkit-box-orient: vertical;
+      }
+      
+      .title h1 {
+        // line-height: 25px;
+        font-size: 1rem;
+        color: rgb(222, 222, 222);
+        height: 100%;
+        width: 100%;
+      }
+
+    .info{
+        z-index: 1;
+        position: absolute;
+        max-width: 90%;
+        min-width: fit-content;
+        background-color: white;
+        border-radius: 40px;
+        bottom: 2%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 10px;
+
+        .profile-img{
+            min-width: 30px;
+            height: 30px;
+            border-radius: 50%;
+
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 10px;
+            }
+        }
+
+        
+
+        p{
+            color: rgb(119, 119, 119);
+            max-lines: 1;
+            white-space: nowrap;      /* Prevent text from wrapping to the next line */
+            overflow: hidden;        /* Hide the overflowing text */
+            text-overflow: ellipsis;
+        }
     }
 
     .btns{
+        height: fit-content;
         width: 100%;
         @include hori-flex-sb;
         padding: 0 5%;
+        margin-top: 10px;
 
         .mains{
             height: 100%;
 
-            fa-icon{
+            fa-icon, i{
                 margin-right: 20px;
-                 color: $lightgrey;
+                //  color: $lightgrey;
+            }
+
+            .heart{
+                color: red;
+                // fill: red;
+                // background-color: red;
             }
         }
         fa-icon{
@@ -42,27 +130,26 @@ $shadow : rgb(128, 128, 128);
         color: $grey-text;
     }
 
-    .info{
+    button{
         width: 100%;
-        @include hori-flex-sb;
-        padding: 0 5%;
-
-        .profile-img{
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-
-            img{
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-        }
+        height: 50px;
+        margin-top: 20px;
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 40px;
+        border: 1px solid rgba(128, 128, 128, 0.341);
 
         p{
-            color: $lightgrey;
-            font-weight: 500;
+            color: $grey-text;
+        }
+    }
+
+    button:hover{
+        background: linear-gradient(90deg, rgba(198,0,219,1) 0%, rgba(0,74,230,1) 100%);
+        p{
+            color: white;
         }
     }
 }

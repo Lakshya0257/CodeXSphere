@@ -21,22 +21,32 @@ export class UserAuthGuard implements CanActivate {
     const path = request.route.path;
 
     const { user_id, key } = request.body;
+    const query_id = request.query['user_id'];
+    const query_key = request.query['key'];
 
-    if ((path === '/user/:user_id' || path==='/blogs' || path==='/blogs/tags/:tag_id' || path==='/blogs/:user_id') && !user_id && !key) {
+
+    console.log(request.query);
+
+    if ((path === '/user/:user_id' || path==='/blogs' || path==='/blogs/:blog_id' || path==='/blogs/tags/:tag_id' || path==='/blogs/user/:user_id' || path==='/user/:user_id' || path==='/blogs/tags/:tag_name') && !query_id && !query_key) {
       return true;
     }
 
-    
-
-    if (!user_id || !key) {
-      throw new HttpException('Missing user_id or key in the request body', HttpStatus.BAD_REQUEST);
-    }
-
-    const user = await this.credentials.findOne({where: {user_id: user_id , key: key}});
+    if(query_id && query_key){
+      const user = await this.credentials.findOne({where: {user_id: query_id , key: query_key}});
     if(user!==null){
       return true;
     }else{
       return false;
     }
+    }
+    if(user_id && key){
+      const user = await this.credentials.findOne({where: {user_id: user_id , key: key}});
+    if(user!==null){
+      return true;
+    }else{
+      return false;
+    }
+    }
+    throw new HttpException('Missing user_id or key in the request', HttpStatus.BAD_REQUEST);
   }
 }

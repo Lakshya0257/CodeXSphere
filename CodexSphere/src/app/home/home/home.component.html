@@ -1,21 +1,31 @@
-
-<div class="content">
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
-    <app-project-container></app-project-container>
+<div class="intro-div">
+    <div class="intro">
+      <h1>Unveil the Developer's Realm</h1>
+    <p>Whether you're a seasoned pro or just starting out, find inspiration, knowledge, and a community that fuels your coding dreams. Welcome to a place where the developer's spirit thrives, where projects take center stage, and where the next big idea is just a blog away. Join us on a voyage through the Developer's Realm and chart your own course in the world of coding.</p>
+    </div>
+    <div class="bottom">
+      <div class="search">
+        <fa-icon [icon]="search"></fa-icon>
+        <input type="text" placeholder="Search....">
+      </div>
+      <div class="tags">
+        <p [class.selected]="selectedTag === 'All'" (click)="selectTag('All')">All</p>
+        <p *ngFor="let tag of tags" [class.selected]="selectedTag === tag" (click)="selectTag(tag)">{{tag}}</p>
+      </div>
+    </div>
+  </div>
+<div class="dumy">
+    <img src="https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Highlight-Windows-Dev-Kit-Lifestyle-M:VP2-859x540" alt="">
+    <div class="blur">
+        <h1>Empower. Innovate. Inspire</h1>
+        <p>Unleash your code creativity on a platform designed for developers, by developers. Share your coding masterpieces, groundbreaking projects, and insightful tech journeys with a thriving community. Dive into a world where innovation knows no bounds.</p>
+    </div>
 </div>
+<div *ngIf="data!==undefined && data.length===0 else blogContent" class="nothing">
+  <img src="https://cdni.iconscout.com/illustration/premium/thumb/nothing-found-3349918-2815869.png?f=webp" alt="">
+</div>
+<ng-template #blogContent>
+  <div class="content">
+    <app-project-container class="gridContent" *ngFor="let blog of data" [blogId]="blog.blog_id" [thumbnail]=blog.thumbnail.image [likes]=blog.total_likes [tags]=blog.tags [username]=blog.creator.username [creator]=blog.creator.avatar.image [title]=blog.title [liked]="blog.liked" [creator_id]="blog.user"></app-project-container>
+</div>
+</ng-template>

@@ -1,8 +1,22 @@
 <div class="nav-bar">
-    <div class="upper-half">
-        <img src="https://images.squarespace-cdn.com/content/v1/622f611c055e8c059c12b7c3/977c96c0-34dd-40e0-af9f-cc23a19a5720/Catch-Logo-Mark-01.png" alt="">
-        <app-nav-button></app-nav-button>
+    <div class="intro">
+        <img class="logo" src="https://us.123rf.com/450wm/mimacz/mimacz1803/mimacz180300040/97196238-abstract-color-striped-ball.jpg?ver=6" alt="">
+        <p>CodeXSphere</p>
     </div>
-    <img src="https://cdn.dribbble.com/users/5448869/screenshots/11964344/media/7c1a55db92d1d015c51ad7595a2b82ff.png?resize=400x300&vertical=center" alt="">
-    <app-info-card></app-info-card>
+    <div class="navs">
+        <p [class.selected]="isActive('/home')" (click)="navigate('home')">Home</p>
+        <p [class.selected]="isActive('/blog/new')" (click)="navigate('blog/new')">New Blog</p>
+        <p>Chat</p>
+        <p>Following</p>
+        <p>Liked</p>
+    </div> 
+        <div *ngIf="isLogin; else elseBlock" class="avatar" (click)="profile()">
+            <img [src]="img" alt="">
+            <p>{{name}}</p>
+        </div>
+        <ng-template #elseBlock>
+            <div (click)="login()" class="avatar">
+                <p>Login / Signup</p>
+            </div>
+        </ng-template>
 </div>

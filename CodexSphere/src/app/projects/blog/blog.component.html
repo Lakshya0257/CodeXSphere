@@ -1,0 +1,72 @@
+<div ngClass="contentss">
+    <div class="cover">
+        <img class="cover-image" [src]="data.thumbnail.image">
+    </div>
+    <div class="blog">
+        <div class="left-side">
+        <h1 class="title">{{data.title}}</h1>
+        <div class="sub-option">
+            <i class="fa-solid fa-heart heart" *ngIf="data.liked === true; else elseBlock" (click)="like()"></i>
+            <ng-template #elseBlock>
+                <i class="fa-regular fa-heart" (click)="like()"></i>
+            </ng-template>
+            <p>Liked by {{data.total_likes}} devs</p>
+        </div>
+        <div *ngIf="checkSameUser(data.user)" class="btns">
+            <button (click)="editBlog()"><p>Edit</p></button>
+            <button (click)="deleteBlog()"><p>Delete</p></button>
+        </div>
+        <hr>
+        
+    <div #editor style="color: rgb(204, 204, 204); width: 100%" [spellcheck]="false"></div>
+        </div>
+        <div class="right-side">
+            <p class="creator-title">CREATOR</p>
+            <div class="info">
+                <div class="user">
+                    <div class="profile-img">
+                        <img [src]="data.creator.avatar.image" alt="">
+                    </div>
+                    <p>{{data.creator.username}}</p>
+                </div>
+                <button (click)="navigateToUser(data.user)" ><p>View</p></button>
+            </div>
+            <hr>
+            <p class="tags-heading">ADDITIONAL</p>
+            <div class="tags">
+            <p>Tags:</p>
+            <div class="tag" *ngFor="let tag of data.tags">
+                <p>{{tag.tag_name}}</p>
+            </div>
+        </div>
+        <hr>
+        <p class="comments-heading">
+            COMMENTS
+        </p>
+        <div class="comment-section">
+            <div *ngFor="let cmnt of comments" class="comment">
+                <div class="user-info">
+                    <div class="profile-img">
+                        <img [src]="cmnt.user.avatar.image" alt="">
+                    </div>
+                    <p>{{cmnt.user.username}}</p>
+                </div>
+                <div class="inner">
+                    <p class="body">{{cmnt.comment}}</p>
+                    <i *ngIf="checkSameUser(cmnt.user_id)" class="fa-solid fa-trash" (click)="deleteComment(cmnt.comment_id)"></i>
+                </div>
+                
+                <p class="time">{{formatTimeAgo(cmnt.dateCreated)}}</p>
+            </div>
+        </div>
+        <div class="comment-input">
+            <input type="text" placeholder="Enter your comment here..." (keypress)="addComment($event)" [(ngModel)]="commentInput">
+        </div>
+        <hr>
+        </div>
+    </div>
+    
+</div>
+<!-- <div (click)="openDialog()" class="comments">
+    <fa-icon [icon]="comment"></fa-icon>
+</div> -->

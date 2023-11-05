@@ -1,16 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 $lightgrey : rgba(202, 202, 202, 0.767);
 $grey-text:grey;
-$dark-grey: rgb(34, 34, 34);
+$dark-grey: rgba(34, 34, 34, 0.714);
 $nav-bar-width:15vw;
-$heading: 1.5rem;
+$heading: 1.3rem;
 $subheading: .9rem;
-$paragraph: .9rem;
+$paragraph: .8rem;
 $iconsize: 1rem;
 $white : white;
+$margin: 5%;
+
+p{
+    font-size: $paragraph;
+}
 
 
-
+p{
+    font-size: $paragraph;
+}
 
 @mixin flex-display{
     display: flex;
@@ -49,7 +56,7 @@ button, i , fa-icon , a{
     text-decoration: none;
 }
 
-h1 , p , h2, h3, h4, h5, h6 , i{
+h1 , p , h2, h3, h4, h5, h6 , i, fa-icon{
     color: $lightgrey;
 }
 
@@ -61,9 +68,11 @@ i{
     display: none;
 }
 body{
-    background-color: black
+    background-color: black;
 }
 
 input[type="file"]{
     display: none;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

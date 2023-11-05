@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UserAuthGuard } from 'src/helpers/guards/user-auth/user-auth.guard';
 import { OptionalUserCredsDto, UserCredsDto } from 'src/common/dtos/user-creds.dto';
+import { LikeBlogDto } from './dto/like-blog.dto';
 
 @Controller('blogs')
 export class BlogsController {
@@ -17,15 +18,21 @@ export class BlogsController {
     return this.blogsService.create(createBlogDto);
   }
 
-  @Post(':blog_id')
+  @Post('like')
+  @UseGuards(UserAuthGuard)
+  likeBlog(@Body() likeDto: LikeBlogDto){
+    return this.blogsService.likeBlog(likeDto);
+  }
+
+  @Post('update/:blog_id')
   @UseGuards(UserAuthGuard)
   updateBlog(@Param('blog_id') blogId: string,@Body() updateBlogDto: UpdateBlogDto) {
     return this.blogsService.updateBlog(blogId, updateBlogDto);
   }
 
-  @Delete(':blog_id')
+  @Delete('delete/:blog_id')
   @UseGuards(UserAuthGuard)
-  deleteBlog(@Param('blog_id') blogId: string,@Body() userCreds: UserCredsDto) {
+  deleteBlog(@Param('blog_id') blogId: string,@Query() userCreds: UserCredsDto) {
     return this.blogsService.deleteBlog(blogId,userCreds);
   }
 
@@ -34,17 +41,25 @@ export class BlogsController {
     return this.blogsService.getAllTags();
   }
 
-  @Get('tags/:tag_id')
+  @Get('tags/:tag_name')
   @UseGuards(UserAuthGuard)
-  getBlogs(@Param('tag_id') tagId: string,@Body() user: OptionalUserCredsDto){
+  getBlogs(@Param('tag_name') tagId: string, @Query() user: OptionalUserCredsDto){
     return this.blogsService.getBlogsOfTag(tagId,user);
   }
+
+  
 
   //Get all blogs from various users(Homepage)
   @Get()
   @UseGuards(UserAuthGuard)
-  findAll(@Body() user: OptionalUserCredsDto) {
+  findAll(@Query() user: OptionalUserCredsDto) {
     return this.blogsService.findAll(user);
+  }
+
+  @Get(':blog_id')
+  @UseGuards(UserAuthGuard)
+  async findBlogById(@Query() user: OptionalUserCredsDto, @Param('blog_id') blog_id : string){
+    return await this.blogsService.getBlogById(blog_id,user);
   }
 
   // Get all user following blogs
@@ -55,9 +70,9 @@ export class BlogsController {
   }
 
   //Get blogs list of particular user
-  @Get(':user_id')
+  @Get('user/:user_id')
   @UseGuards(UserAuthGuard)
-  findOne(@Param('user_id') id: string, @Body() user: OptionalUserCredsDto) {
+  findOne(@Param('user_id') id: string, @Query() user: OptionalUserCredsDto) {
     return this.blogsService.getUserBlogs(id,user);
   }
 
@@ -74,7 +89,7 @@ export class BlogsController {
   }
 
   //delete comment
-  @Delete('comments/:comment_id')
+  @Post('comments/delete/:comment_id')
   @UseGuards(UserAuthGuard)
   deleteComment(@Param('comment_id') id:string, @Body() userCreds:UserCredsDto){
     return this.blogsService.deleteComment(userCreds,id);

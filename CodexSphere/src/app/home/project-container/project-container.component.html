@@ -1,17 +1,31 @@
 <div class="card">
-    <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg" alt="">
+    
+    <div class="thumbnail">
+        <div class="info">
+            <div class="profile-img">
+                <img [src]="creator" alt="">
+            </div>
+            <p>{{username}}</p>
+        </div>
+        <img class="thumbnail" [src]="thumbnail" alt=""></div>
+    <div class="title">
+        <h1>{{title}}</h1>
+    </div>
+    <hr>
     <div class="btns">
-        <div class="mains">
-            <fa-icon [icon]="heart"></fa-icon>
+        <div class="mains">            
+            <i class="fa-solid fa-heart heart" *ngIf="liked === true; else elseBlock" (click)="like()"></i>
+            <ng-template #elseBlock>
+                <i class="fa-regular fa-heart" (click)="like()"></i>
+            </ng-template>
+            <!-- <fa-icon class="heart" [icon]="heart"></fa-icon> -->
             <fa-icon [icon]="comment"></fa-icon>
         </div>
         <fa-icon [icon]="bookmark"></fa-icon>
     </div>
-    <p>Liked by 12,000 devs</p>
-    <section class="info">
-        <div class="profile-img">
-            <img src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" alt="">
-        </div>
-        <p>Requesting testing on my website</p>
-    </section>
+    <p>Liked by {{likes}} devs</p>
+    <button (click)="readmore()">
+        <p>Read More</p>
+    </button>
+    
 </div>

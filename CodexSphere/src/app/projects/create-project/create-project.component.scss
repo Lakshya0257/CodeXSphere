@@ -2,9 +2,10 @@
 
 .contentss{
     color: grey;
-    overflow-y: auto;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
+    margin-top: 120px;
     width: 100%;
     height: 100%;
 
@@ -46,7 +47,7 @@
             overflow: hidden;
             resize: both;
             min-height: 40px;
-            font-size: 2em;
+            font-size: 2rem;
             font-weight: bold;
             outline: none;
             border: none;
@@ -73,13 +74,13 @@
             width: 70%;
             height: 400px;
             object-fit: cover;
-            border-radius: 5px;
+            border-radius: 20px;
         }
 
         .input{
             min-height: fit-content;
             width: 50%;
-            margin-top: 10px;
+            margin-top: 20px;
             height: 100%;
             display: flex;
             justify-content: start;
@@ -108,8 +109,11 @@
                 background: linear-gradient(270deg,#ff00ea,#5100ff);
                 cursor: pointer;
                 color: white;
-                border-radius: 10px;
-    
+                border-radius: 30px;
+
+                p{
+                    color: white;
+                }
             }
     
             label:active{
@@ -158,7 +162,7 @@
                 margin-bottom: 50px;
 
                 .tag{
-                    background-color: rgba(54, 54, 54, 0.294);
+                    background-color: rgba(54, 54, 54, 0.556);
                     border-radius: 5px;
                     width: fit-content;
                     height: fit-content;

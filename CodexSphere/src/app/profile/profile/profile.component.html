@@ -1,0 +1,62 @@
+<div class="content">
+    <div class="links">
+        <div *ngIf = "github!==''" class="link">
+            <img (click)="navigate(github)" src="https://i.pinimg.com/736x/b5/1b/78/b51b78ecc9e5711274931774e433b5e6.jpg" alt="">
+        </div>
+        <div *ngIf = "linkedin!==''" class="link">
+            <img (click)="navigate(linkedin)" src="https://static.vecteezy.com/system/resources/previews/018/930/584/original/linkedin-logo-linkedin-icon-transparent-free-png.png" alt="">
+        </div>
+    </div>
+    <div class="info">
+        <div class="avatar">
+            <img [src]="profile_data.avatar.image"  alt="">
+        </div>
+        <h1>{{profile_data.username}}</h1>
+    </div>
+    <p>{{profile_data.description}}</p>
+    <div class="extras">
+        <div class="data">
+            <p>{{profile_data.total_blogs}}</p>
+            <p>Posts</p>
+        </div>
+        <div class="data">
+            <p>{{profile_data.followers}}</p>
+            <p>Followers</p>
+        </div>
+        <div class="data">
+            <p>{{profile_data.following}}</p>
+            <p>Following</p>
+        </div>
+    </div>
+
+    <button *ngIf="!self else elseBlock" (click)="follow()">
+        <p *ngIf="!following else unfollow">Follow</p>
+        <ng-template #unfollow>
+            <p>Unfollow</p>
+        </ng-template>
+    </button>
+    <ng-template #elseBlock>
+        <div class="self">
+            <button (click)="editProfile()">
+                <p>Edit</p>
+            </button>
+            <button class="logout" (click)="logout()">
+                <p>Logout</p>
+            </button>
+        </div>
+    </ng-template>
+</div>
+<div class="heading">
+    <h1>Projects</h1>
+</div>
+
+<div *ngIf="data!==undefined && data.length===0 else blogContent" class="nothing">
+    <img src="https://cdni.iconscout.com/illustration/premium/thumb/nothing-found-3349918-2815869.png?f=webp" alt="">
+</div>
+
+<ng-template #blogContent>
+    <div class="blog-content">
+        <app-project-container class="gridContent" *ngFor="let blog of data" [blogId]="blog.blog_id" [thumbnail]=blog.thumbnail.image [likes]=blog.total_likes [tags]=blog.tags [username]=blog.creator.username [creator]=blog.creator.avatar.image [title]=blog.title [liked]=blog.liked></app-project-container>
+    </div>
+</ng-template>
+

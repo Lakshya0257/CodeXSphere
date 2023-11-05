@@ -30,7 +30,7 @@ export class Media extends AbstractEntity<Media>{
     @JoinColumn({name: 'blog_id'})
     blog: Blog;
 
-    @ManyToOne(()=> MediaType)
+    @ManyToOne(()=> MediaType, {cascade: true})
     @JoinColumn({ name: 'media_type_id', referencedColumnName: 'type_id' })
     media_type: MediaType;
 }

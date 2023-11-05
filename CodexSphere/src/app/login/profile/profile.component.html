@@ -1,15 +1,21 @@
 <div ngClass="content">
     <div class="inner-content">
-        <h1>Create new profile</h1>
+        <h1 *ngIf="!edit_profile else elseBlock">Create new profile</h1>
+        <ng-template #elseBlock>
+            <h1 *ngIf="edit_profile else elseBlock">Edit Profile</h1>
+        </ng-template>
         <div ngClass="cover"><img class="cover-image" [src]=imagePreview></div>
         <div ngClass="input">
             <input type="file" accept="image/*" (click)="onImageInputChange()" class="pickImage" id="avatar">
-            <label for="avatar" class="avatarBtn">Pick avatar</label>
+            <label for="avatar" class="avatarBtn"><p>Pick avatar</p></label>
         </div>
-
         <input ngClass="username" type="text" placeholder="Create new Username" #username>
+        <input ngClass="username" type="text" placeholder="Enter your Github Link (Optional)" #github>
+        <input ngClass="username" type="text" placeholder="Enter your Linkedin Link (Optional)" #linkedin>
         <textarea placeholder="About" #about></textarea>
-        <button ngClass="create" (click)="createProfile()"><p>Create Profile</p></button>
+        <button *ngIf="!edit_profile else updateBlock" ngClass="create" (click)="profile()"><p>Create Profile</p></button>
+        <ng-template #updateBlock>
+            <button ngClass="create" (click)="profile()"><p>Update Profile</p></button>
+        </ng-template>
     </div>
-
 </div>
