@@ -1,0 +1,15 @@
+<div class="dumy">
+    <img src="https://fjwp.s3.amazonaws.com/blog/wp-content/uploads/2021/09/16154011/5-Ways-to-Grow-Your-Professional-Network-1024x512.jpg" alt="">
+    <div class="blur">
+        <h1>Discover the World through Your Network</h1>
+        <p>Stay informed, inspired, and connected with the latest content shared by your network of influencers and thought leaders.</p>
+    </div>
+</div>
+<div *ngIf="data!==undefined && data.length===0 else blogContent" class="nothing">
+  <img src="https://cdni.iconscout.com/illustration/premium/thumb/nothing-found-3349918-2815869.png?f=webp" alt="">
+</div>
+<ng-template #blogContent>
+  <div class="content">
+    <app-project-container class="gridContent" *ngFor="let blog of data" [blogId]="blog.blog_id" [thumbnail]=blog.thumbnail.image [likes]=blog.total_likes [tags]=blog.tags [username]=blog.creator.username [creator]=blog.creator.avatar.image [title]=blog.title [liked]="blog.liked" [creator_id]="blog.user"></app-project-container>
+</div>
+</ng-template>

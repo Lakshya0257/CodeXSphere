@@ -12,6 +12,8 @@ import { HelperService } from './global-services/helper/helper.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProjectContainerComponent } from './home/project-container/project-container.component';
 import { BlogCardService } from './standalone/services/blog.service';
+import {MatProgressBarModule} from '@angular/material/progress-bar'
+import { LoaderService } from './loader/loader.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,8 +26,9 @@ import { BlogCardService } from './standalone/services/blog.service';
     SnackbarComponent,
     ProjectContainerComponent,
     FontAwesomeModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatProgressBarModule
   ],
-  providers:[ApiHelperService, ErrorService, UserStoreService, HelperService, BlogCardService]
+  providers:[ApiHelperService, ErrorService, UserStoreService, HelperService, BlogCardService, LoaderService]
 })
 export class AppModule {}

@@ -61,19 +61,40 @@ export class ProfileComponent implements AfterViewInit {
   //   };
   // }
 
-  onImageInputChange() {
-    this.imageCompress.uploadFile().then(({image, orientation}) => {
-        console.log('Size in bytes of the uploaded image was:', this.imageCompress.byteCount(image));
-
-        this.imageCompress
-            .compressFile(image, orientation, 50, 50) // 50% ratio, 50% quality
-            .then(compressedImage => {
-                this.loginService.setAvatar(compressedImage);
-                this.imagePreview=compressedImage;
-                console.log('Size in bytes after compression is now:', this.imageCompress.byteCount(compressedImage));
+  onImageInputChange(event: any) {
+    const file = event.target.files[0];
+    const imageType = /image.*/;
+  
+    if (file && file.type.match(imageType)) {
+      const reader = new FileReader();
+  
+      reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+  
+        image.onload = () => {
+          const orientation = 1; // You may need to determine the image orientation
+  
+          // Convert the HTMLImageElement to a data URL using a canvas
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          ctx!.drawImage(image, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/jpeg'); // Adjust the image format if needed
+  
+          this.imageCompress
+            .compressFile(dataUrl, orientation, 40, 40) // Adjust compression settings as needed
+            .then((compressedImage) => {
+              this.imagePreview = compressedImage;
+              console.log('Size in bytes after compression is now:', this.imageCompress.byteCount(compressedImage));
             });
-    });
-}
+        };
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  }
 
   profile(){
     if(this.username?.nativeElement.value===""){

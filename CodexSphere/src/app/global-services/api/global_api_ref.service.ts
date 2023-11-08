@@ -18,6 +18,8 @@ export class ApiHelperService {
     tags : string = "http://localhost:3000/blogs/tags";
     blog_like : string = "http://localhost:3000/blogs/like";
     comment : string = "http://localhost:3000/blogs/comments";
+    following_blogs= "http://localhost:3000/blogs/followings";
+    liked_blogs= "http://localhost:3000/blogs/liked";
 
     
 }

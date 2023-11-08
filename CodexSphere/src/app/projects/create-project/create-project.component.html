@@ -2,7 +2,7 @@
     <div class="cover">
         <img class="cover-image" [src]=imagePreview>
         <div ngClass="input">
-            <input  type="file" accept="image/*" (change)="onImageInputChange()" class="pickImage" id="blogThumb">
+            <input  type="file" accept="image/*" (change)="onImageInputChange($event)" class="pickImage" id="blogThumb">
             <label for="blogThumb" class="thumbButtn"><p>Select image</p></label>
             <h1>Composition</h1>
             <div class="tag-heading">

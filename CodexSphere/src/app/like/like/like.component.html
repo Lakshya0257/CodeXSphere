@@ -1,0 +1,15 @@
+<div class="dumy">
+    <img src="https://popgoesdculture.files.wordpress.com/2016/11/feature-image-most-popular-posts-2015.gif" alt="">
+    <div class="blur">
+        <h1>Your Liked Blogs, Your Personal Library</h1>
+        <p>Revisit and savor the blogs you've liked. This is your personal library of inspiration and knowledge. Rediscover the gems that have left an impression on you.</p>
+    </div>
+</div>
+<div *ngIf="data!==undefined && data.length===0 else blogContent" class="nothing">
+  <img src="https://cdni.iconscout.com/illustration/premium/thumb/nothing-found-3349918-2815869.png?f=webp" alt="">
+</div>
+<ng-template #blogContent>
+  <div class="content">
+    <app-project-container class="gridContent" *ngFor="let blog of data" [blogId]="blog.blog.blog_id" [thumbnail]=blog.blog.thumbnail.image [likes]=blog.blog.total_likes [tags]=blog.blog.tags [username]=blog.blog.creator.username [creator]=blog.blog.creator.avatar.image [title]=blog.blog.title [liked]=true [creator_id]="blog.blog.user"></app-project-container>
+</div>
+</ng-template>

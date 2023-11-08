@@ -6,7 +6,7 @@
         </ng-template>
         <div ngClass="cover"><img class="cover-image" [src]=imagePreview></div>
         <div ngClass="input">
-            <input type="file" accept="image/*" (click)="onImageInputChange()" class="pickImage" id="avatar">
+            <input type="file" accept="image/*" (click)="onImageInputChange($event)" class="pickImage" id="avatar">
             <label for="avatar" class="avatarBtn"><p>Pick avatar</p></label>
         </div>
         <input ngClass="username" type="text" placeholder="Create new Username" #username>

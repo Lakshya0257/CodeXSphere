@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserStoreService } from 'src/app/global-services/store-service/user-service.service';
+import { LoaderService } from 'src/app/loader/loader.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,7 +16,7 @@ export class NavBarComponent {
   name: String = "";
 
 
-  constructor(private userStore: UserStoreService , private router: Router){}
+  constructor(private userStore: UserStoreService , private router: Router, public loaderService: LoaderService){}
 
   ngOnInit(): void {
 
@@ -49,8 +50,8 @@ export class NavBarComponent {
   }
 
   navigate(route: string){
-    if(route==='blog/new'){
-      if(this.userStore.userId==="" || this.userStore.key===""){
+    if(route==='blog/new' || route==='following' || route==='liked'){
+      if(this.userStore.userId==="" || this.userStore.key==="" || this.userStore.key===undefined || this.userStore.userId===undefined){
         this.router.navigate(['/login']);
         return;
       }

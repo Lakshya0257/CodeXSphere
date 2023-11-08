@@ -24,6 +24,13 @@ export class BlogsController {
     return this.blogsService.likeBlog(likeDto);
   }
 
+  //get user liked blogs
+  @Get('liked')
+  @UseGuards(UserAuthGuard)
+  getUserLikedBlogs(@Query() userCreds: UserCredsDto){
+    return this.blogsService.getLikedBlogs(userCreds);
+  }
+
   @Post('update/:blog_id')
   @UseGuards(UserAuthGuard)
   updateBlog(@Param('blog_id') blogId: string,@Body() updateBlogDto: UpdateBlogDto) {
@@ -56,19 +63,21 @@ export class BlogsController {
     return this.blogsService.findAll(user);
   }
 
+   // Get all user following blogs
+   @Get('followings')
+   @UseGuards(UserAuthGuard)
+   getFollowingBlogs(@Query() creds: UserCredsDto){
+     return this.blogsService.followingBlogs(creds);
+   }
+ 
+
   @Get(':blog_id')
   @UseGuards(UserAuthGuard)
   async findBlogById(@Query() user: OptionalUserCredsDto, @Param('blog_id') blog_id : string){
     return await this.blogsService.getBlogById(blog_id,user);
   }
 
-  // Get all user following blogs
-  @Get('followings')
-  @UseGuards(UserAuthGuard)
-  getFollowingBlogs(@Body() creds: UserCredsDto){
-    return this.blogsService.followingBlogs(creds);
-  }
-
+ 
   //Get blogs list of particular user
   @Get('user/:user_id')
   @UseGuards(UserAuthGuard)

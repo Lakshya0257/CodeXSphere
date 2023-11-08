@@ -8,6 +8,16 @@ const routes: Routes = [
       import('./home/home.module').then((mod) => mod.HomeModule),
   },
   {
+    path: 'following',
+    loadChildren: () =>
+      import('./following/following.module').then((mod) => mod.FollowingModule),
+  },
+  {
+    path: 'liked',
+    loadChildren: () =>
+      import('./like/like.module').then((mod) => mod.LikeModule),
+  },
+  {
     path: 'blog',
     loadChildren: () =>
       import('./projects/projects.module').then((mod) => mod.ProjectsModule),

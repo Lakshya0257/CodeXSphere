@@ -7,7 +7,7 @@ import { UserStoreService } from 'src/app/global-services/store-service/user-ser
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class ProfileComponent implements OnInit {
   constructor(private profileService: ProfileService, private route: ActivatedRoute, private userStore: UserStoreService, private router: Router){
@@ -49,6 +49,10 @@ export class ProfileComponent implements OnInit {
   navigate(url: string){
     window.open(url, '_blank');
   }
+
+  // delete(){
+
+  // }
 
   logout(){
     this.userStore.resetStore();

@@ -41,7 +41,7 @@ import { Credentials } from './user/entities/creds.entity';
     // }),
     // DatabaseConnectionModule,
     BlogsModule,
-    UserModule,],
+    UserModule],
   controllers: [AppController],
   providers: [AppService],
 })

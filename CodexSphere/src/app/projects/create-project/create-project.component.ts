@@ -113,18 +113,42 @@ export class CreateProjectComponent implements AfterViewInit {
   //   };
   // }
 
-  onImageInputChange() {
-    this.imageCompress.uploadFile().then(({image, orientation}) => {
-        console.log('Size in bytes of the uploaded image was:', this.imageCompress.byteCount(image));
-
-        this.imageCompress
-            .compressFile(image, orientation, 50, 50) // 50% ratio, 50% quality
-            .then(compressedImage => {
-                this.imagePreview=compressedImage;
-                console.log('Size in bytes after compression is now:', this.imageCompress.byteCount(compressedImage));
+  onImageInputChange(event: any) {
+    const file = event.target.files[0];
+    const imageType = /image.*/;
+  
+    if (file && file.type.match(imageType)) {
+      const reader = new FileReader();
+  
+      reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+  
+        image.onload = () => {
+          const orientation = 1; // You may need to determine the image orientation
+  
+          // Convert the HTMLImageElement to a data URL using a canvas
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          ctx!.drawImage(image, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/jpeg'); // Adjust the image format if needed
+  
+          this.imageCompress
+            .compressFile(dataUrl, orientation, 60, 50) // Adjust compression settings as needed
+            .then((compressedImage) => {
+              this.imagePreview = compressedImage;
+              console.log('Size in bytes after compression is now:', this.imageCompress.byteCount(compressedImage));
             });
-    });
-}
+        };
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  
 
 private initializeEditor() {
   this.editor = new EditorJS({
@@ -163,7 +187,7 @@ private initializeEditor() {
 
 // Function to check and restrict the number of blocks
 private async checkBlockCount() {
-  const maxBlocks = 20; // Set your desired maximum number of blocks here
+  const maxBlocks = 40; // Set your desired maximum number of blocks here
   const currentBlocks = this.editor?.blocks.getBlocksCount();
 
   if (currentBlocks! > maxBlocks) {
@@ -176,18 +200,20 @@ private async checkBlockCount() {
 }
  
   saveData() {
-    // if(this.imagePreview==="https://penji.co/wp-content/uploads/2021/07/What-is-an-Illustration-Project-and-How-Do-I-Order-One.jpg"){
-    //   console.warn('Please select a project thumbnail');
-    // }else 
+    if(this.imagePreview==="https://penji.co/wp-content/uploads/2021/07/What-is-an-Illustration-Project-and-How-Do-I-Order-One.jpg"){
+      console.warn('Please select a project thumbnail');
+      this.helperService.showSnackbar('Please select a project thumbnail');
+    }else 
     if(this.title===""){
-      console.warn('Please enter a valid title');
+      this.helperService.showSnackbar('Please enter a valid title');
     }else if(this.tags.length===0){
+      this.helperService.showSnackbar('Please enter atleast one tag');
       console.warn("Please enter atleast one tag");
     } 
     else if(this.editor?.blocks.getBlocksCount()===undefined){
       this.helperService.showSnackbar("Please enter atleast one block")
     }
-    else if(this.editor?.blocks.getBlocksCount()>20){
+    else if(this.editor?.blocks.getBlocksCount()>40){
       this.helperService.showSnackbar("Max number of blocks exceeded, please remove the blocks")
     }
     else{
@@ -197,7 +223,7 @@ private async checkBlockCount() {
         const output = JSON.stringify({
           "user_id": this.userStore.userId,
           "key": this.userStore.key,
-          "thumbnail_url":"https://www.hindustantimes.com/ht-img/img/2023/08/07/1600x900/Ragdoll_1691391098967_1691391099171.jpg",
+          "thumbnail_url":this.imagePreview,
           "body":data,
           "title":this.title,
           "tags":this.tags

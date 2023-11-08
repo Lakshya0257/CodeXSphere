@@ -138,6 +138,11 @@ export class BlogsService {
     }
   }
 
+  async getLikedBlogs(userCreds: UserCredsDto){
+    const blogs: BlogLikes[] = await this.blogLikesRepository.find({where: {'user_id': userCreds.user_id}, relations: ['blog','blog.thumbnail','blog.creator','blog.creator.avatar']});
+    return blogs;
+  }
+
   async followingBlogs(userCreds: UserCredsDto){
     const user = await this.profileRepository.findOne({ where: {user_id: userCreds.user_id},relations: ['following_to']});
     let blogList :Blog[] = [];
@@ -157,7 +162,7 @@ export class BlogsService {
   }
 
   async findAll(user: OptionalUserCredsDto): Promise<Blog[]> {
-    const blogs = await this.blogRepository.find({relations:['thumbnail','creator','creator.avatar','tags']});
+    const blogs = await this.blogRepository.find({relations:['thumbnail','creator','creator.avatar']});
     if(user.user_id){
       console.log("Checking likes")
       for(const blog of blogs){

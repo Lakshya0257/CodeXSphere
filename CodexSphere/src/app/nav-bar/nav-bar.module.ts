@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 
@@ -9,7 +10,8 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     NavBarComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatProgressBarModule
   ],
   exports:[
     NavBarComponent

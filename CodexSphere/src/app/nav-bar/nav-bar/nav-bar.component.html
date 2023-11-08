@@ -1,3 +1,4 @@
+<mat-progress-bar *ngIf="loaderService.isLoading | async" class="progress" mode="indeterminate"></mat-progress-bar>
 <div class="nav-bar">
     <div class="intro">
         <img class="logo" src="https://us.123rf.com/450wm/mimacz/mimacz1803/mimacz180300040/97196238-abstract-color-striped-ball.jpg?ver=6" alt="">
@@ -6,9 +7,9 @@
     <div class="navs">
         <p [class.selected]="isActive('/home')" (click)="navigate('home')">Home</p>
         <p [class.selected]="isActive('/blog/new')" (click)="navigate('blog/new')">New Blog</p>
-        <p>Chat</p>
-        <p>Following</p>
-        <p>Liked</p>
+        <!-- <p>Chat</p> -->
+        <p [class.selected]="isActive('/following')" (click)="navigate('following')">Following</p>
+        <p [class.selected]="isActive('/liked')" (click)="navigate('liked')">Liked</p>
     </div> 
         <div *ngIf="isLogin; else elseBlock" class="avatar" (click)="profile()">
             <img [src]="img" alt="">
